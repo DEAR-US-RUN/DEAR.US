@@ -18,6 +18,22 @@ export const errorHandler: ErrorRequestHandler = async (err, _req, res, _next) =
   if (typeof err?.message === 'string' && (err.message.endsWith('_NOT_CONFIGURED') || err.message === 'DATABASE_NOT_CONFIGURED')) {
     res.status(503).json({error:{code:'NOT_CONFIGURED',message:'This service has not been configured yet.'}}); return;
   }
+  // Only allowlisted failure categories are logged; never raw provider messages.
+  const databaseFailures: Record<string, [string, string]> = {
+    '42P01': ['DATABASE_SCHEMA_MISSING', 'Account setup is unavailable: the database migration must be applied by the administrator.'],
+    '42703': ['DATABASE_SCHEMA_OUTDATED', 'Account setup is unavailable: the database schema must be updated by the administrator.'],
+    '28P01': ['DATABASE_AUTH_FAILED', 'Account setup is unavailable: the administrator must update the database credentials.'],
+    '42501': ['DATABASE_PERMISSION_DENIED', 'Account setup is unavailable: the administrator must apply the database runtime-role grants.'],
+    '3D000': ['DATABASE_UNAVAILABLE', 'Account setup is unavailable: the configured database does not exist.'],
+    'ECONNREFUSED': ['DATABASE_UNAVAILABLE', 'The database is temporarily unavailable. Please retry later.'],
+    'ETIMEDOUT': ['DATABASE_UNAVAILABLE', 'The database connection timed out. Please retry later.'],
+    'ENOTFOUND': ['DATABASE_UNAVAILABLE', 'Account setup is unavailable: the administrator must check the database host.'],
+  };
+  const failure = databaseFailures[String(err?.code)];
+  if (failure) {
+    console.error(JSON.stringify({level:'error',event:'request_failed',category:failure[0]}));
+    res.status(503).json({error:{code:failure[0],message:failure[1]}}); return;
+  }
   // Never log request bodies, query strings, tokens, keys, SQL, or diary contents.
   const errorClass=err?.constructor?.name || 'Error';
   console.error(JSON.stringify({level:'error',event:'request_failed',errorClass}));
