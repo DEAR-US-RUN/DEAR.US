@@ -1,80 +1,13 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <meta name="theme-color" content="#f7f4ec">
-  <title>DEAR.US</title>
-  <style>
-    * { box-sizing: border-box; }
-    :root { color-scheme: light; --ink: #292d28; --muted: #6d6b61; --gold: #927440; --paper: #f7f4ec; }
-    body { margin: 0; min-height: 100vh; min-height: 100svh; padding: 0 6vw; background: var(--paper); color: var(--ink); font-family: Georgia, "Times New Roman", serif; }
-    .masthead { max-width: 1200px; margin: auto; padding: 30px 0; display: flex; align-items: center; justify-content: space-between; border-bottom: 1px solid #cfc8b7; }
-    .brand { font-size: 23px; letter-spacing: .15em; }
-    .edition, .eyebrow, .signature, .footer, button { font-family: system-ui, sans-serif; font-size: 10px; text-transform: uppercase; letter-spacing: .2em; }
-    .edition { color: var(--muted); }
-    main { max-width: 1200px; margin: auto; min-height: calc(100svh - 170px); display: grid; grid-template-columns: 1.15fr 1fr; align-items: center; gap: 7vw; padding: 65px 0; }
-    .copy { animation: enter 1s ease both; }
-    .eyebrow { display: flex; align-items: center; gap: 15px; color: var(--gold); }
-    .eyebrow::before { content: ""; width: 36px; height: 1px; background: var(--gold); }
-    h1 { margin: 30px 0 24px; font-size: clamp(50px, 6.8vw, 92px); font-weight: 400; letter-spacing: -.055em; line-height: 1.06; }
-    h1 em { color: #737b61; font-weight: 400; }
-    .intro { max-width: 340px; color: var(--muted); font-size: 17px; line-height: 1.85; }
-    button { display: inline-flex; align-items: center; gap: 35px; margin-top: 25px; padding: 20px 26px; border: 1px solid var(--ink); background: var(--ink); color: var(--paper); cursor: pointer; transition: background .25s, transform .25s; }
-    button:hover { background: #4c5542; transform: translateY(-3px); }
-    button:focus-visible { outline: 2px solid var(--gold); outline-offset: 5px; }
-    .arrow { font-size: 19px; line-height: 1; transition: transform .25s; }
-    button:hover .arrow { transform: translateX(5px); }
-    .message { min-height: 3.6em; max-width: 340px; margin: 20px 0 0; color: var(--muted); font-size: 13px; line-height: 1.8; }
-    .message.reveal { animation: enter .5s ease both; color: #49543c; }
-    .art { position: relative; min-height: 440px; display: grid; place-items: center; background: #e9e7db; border-radius: 48% 48% 0 0; animation: enter 1.3s ease both; }
-    .art::before { content: ""; position: absolute; inset: 15px; border: 1px solid #b5aa8c; border-radius: inherit; }
-    .letter { position: relative; width: 70%; padding: 40px 22px; background: #fcfaf3; box-shadow: 0 20px 35px #51452b18; text-align: center; transform: rotate(-7deg); animation: drift 8s ease-in-out infinite; }
-    .letter::before { content: ""; position: absolute; inset: 10px; border: 1px solid #d8cfba; pointer-events: none; }
-    .monogram { display: block; color: var(--gold); font-size: 42px; font-style: italic; margin-bottom: 20px; }
-    .letter p { font-size: clamp(20px, 2.5vw, 30px); line-height: 1.45; margin: 0 0 25px; }
-    .signature { font-size: 9px; color: var(--gold); }
-    .seal { position: absolute; bottom: 32px; right: 8px; width: 64px; height: 64px; display: grid; place-items: center; border-radius: 50%; background: #7a4939; color: #eee1c7; box-shadow: inset 0 0 0 5px #ffffff12, 0 5px 12px #30241825; font-size: 24px; font-style: italic; }
-    .footer { max-width: 1200px; margin: auto; padding: 23px 0; border-top: 1px solid #cfc8b7; display: flex; justify-content: space-between; gap: 20px; color: var(--muted); font-size: 9px; line-height: 1.8; }
-    @keyframes enter { from { opacity: 0; transform: translateY(16px); } to { opacity: 1; transform: translateY(0); } }
-    @keyframes drift { 0%, 100% { transform: rotate(-7deg) translateY(0); } 50% { transform: rotate(-5deg) translateY(-8px); } }
-    @media (max-width: 700px) { body { padding: 0 7vw; } .edition { font-size: 8px; letter-spacing: .1em; } main { grid-template-columns: 1fr; gap: 35px; padding: 48px 0; } h1 { font-size: clamp(48px, 11vw, 72px); } .art { min-height: 360px; max-width: 400px; width: 100%; justify-self: center; } .footer { font-size: 8px; letter-spacing: .1em; } }
-    @media (prefers-reduced-motion: reduce) { *, *::before, *::after { animation: none !important; transition: none !important; } button:hover { transform: none; } }
-  </style>
-</head>
-<body>
-  <header class="masthead">
-    <div class="brand">DEAR.US</div>
-    <span class="edition">Thoughtfully connected.</span>
-  </header>
-  <main>
-    <section class="copy" aria-labelledby="welcome">
-      <div class="eyebrow">A little space for connection</div>
-      <h1 id="welcome">Good things<br>begin with<br><em>a simple hello.</em></h1>
-      <p class="intro">In a world that moves so quickly, a little connection goes a long way. Take a moment. Make yourself at home.</p>
-      <button type="button" id="hello">Say hello <span class="arrow" aria-hidden="true">&rarr;</span></button>
-      <p class="message" id="message" role="status" aria-live="polite">No grand gestures. Just a warm welcome.</p>
-    </section>
-    <div class="art" aria-hidden="true">
-      <div class="letter">
-        <span class="monogram">D.</span>
-        <p>A little kindness.<br>A meaningful moment.<br>A place for us.</p>
-        <span class="signature">With warmth, DEAR.US</span>
-        <span class="seal">D</span>
-      </div>
-    </div>
-  </main>
-  <footer class="footer"><span>DEAR.US &mdash; Made for connection</span><span>The art of saying hello.</span></footer>
-  <script>
-    const button = document.getElementById('hello');
-    const message = document.getElementById('message');
-    button.addEventListener('click', () => {
-      message.classList.remove('reveal');
-      // Restart the short greeting animation on repeated clicks.
-      void message.offsetWidth;
-      message.textContent = 'Hello, you. It’s lovely to have you here.';
-      message.classList.add('reveal');
-    });
-  </script>
-</body>
+<!doctype html>
+<html lang="en" data-theme="dark">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta name="theme-color" content="#101c17" />
+    <meta name="referrer" content="no-referrer" />
+    <meta name="description" content="A thoughtful, private space for the moments that make us." />
+    <title>dear, us. — A little space for your story</title>
+    <link rel="icon" href="/favicon.svg" type="image/svg+xml" />
+  </head>
+  <body><div id="root"></div><script type="module" src="/src/main.tsx"></script></body>
 </html>
