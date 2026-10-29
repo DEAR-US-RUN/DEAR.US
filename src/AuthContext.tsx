@@ -31,7 +31,19 @@ export function AuthProvider({children}:{children:ReactNode}){
   catch(e:any){
    if(e.code==='auth/multi-factor-auth-required'){
     const r=getMultiFactorResolver(auth,e);if(!r.hints.some(h=>h.factorId==='totp')){setError('A TOTP authenticator is required for this sign-in.');return;}setResolver(r);
-   }else {signingIn.current=false;setError('Google sign-in failed. Please try again.');}
+    }else {
+    signingIn.current=false;
+    const messages:Record<string,string>={
+     'auth/unauthorized-domain':'This website is not authorized for Google sign-in. Add its hostname in Firebase Authentication settings.',
+     'auth/operation-not-allowed':'Google sign-in is disabled in Firebase Authentication.',
+     'auth/popup-blocked':'Your browser blocked the Google popup. Allow popups for this website and retry.',
+     'auth/popup-closed-by-user':'The Google window was closed before sign-in finished. Please retry.',
+     'auth/cancelled-popup-request':'Another sign-in window was opened. Finish that attempt or retry.',
+     'auth/network-request-failed':'Google sign-in could not connect. Check your connection and the website Content Security Policy.',
+     'auth/invalid-api-key':'The Firebase browser API key is invalid. The administrator must update it and rebuild.',
+    };
+    setError(messages[e.code]||'Google sign-in failed. Check Firebase configuration and try again.');
+   }
   }
  }
  async function completeMfa(code:string){
