@@ -1,0 +1,6 @@
+import type { Diary,User } from './types';
+export const sampleUser:User={id:'sample-me',uid:'sample',name:'Alex',email:null,avatar:null,isOwner:false};
+export const sampleDiaries:Diary[]=[
+ {id:'sample-together',title:'Our little world',kind:'connected',relationshipLabel:'partners',otherName:'Jamie',targetMode:'date',targetDuration:null,targetDate:'2026-12-25',remainingDays:57,createdAt:'2026-07-24T12:00:00Z',lastActivityAt:'2026-10-28T12:00:00Z',members:[{id:'sample-me',name:'Alex',avatar:null,joinedAt:'2026-07-24T12:00:00Z',role:'owner'},{id:'sample-them',name:'Jamie',avatar:null,joinedAt:'2026-07-25T12:00:00Z',role:'member'}],connectedAt:'2026-07-25T12:00:00Z',daysConnected:96,approvals:[],unlockedAt:null,myEntryCount:18,myStorageBytes:2825740,streak:7,myId:'sample-me'},
+ {id:'sample-personal',title:'Notes to self',kind:'personal',relationshipLabel:null,otherName:null,targetMode:'none',targetDuration:null,targetDate:null,remainingDays:null,createdAt:'2026-08-24T12:00:00Z',lastActivityAt:'2026-10-27T12:00:00Z',members:[{id:'sample-me',name:'Alex',avatar:null,joinedAt:'2026-08-24T12:00:00Z',role:'owner'}],connectedAt:null,daysConnected:null,approvals:[],unlockedAt:null,myEntryCount:12,myStorageBytes:530000,streak:0,myId:'sample-me'}
+];
