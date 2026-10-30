@@ -4,6 +4,11 @@ import { reportOperationalFailure } from './monitoring';
 export class AppError extends Error {
   constructor(public status: number, public code: string, message: string) { super(message); }
 }
+/** Server configuration faults (missing or malformed credentials) must never be
+ * reported as an expired user session; they are reported as 503 NOT_CONFIGURED. */
+export const isNotConfigured = (error: unknown): boolean =>
+  typeof (error as { message?: unknown } | null)?.message === 'string' && (error as Error).message.endsWith('_NOT_CONFIGURED');
+
 export const missing = () => new AppError(404, 'NOT_FOUND', 'This resource is unavailable.');
 export const forbidden = () => new AppError(403, 'FORBIDDEN', 'You do not have permission to do that.');
 export const conflict = (message: string, code = 'CONFLICT') => new AppError(409, code, message);
@@ -15,7 +20,9 @@ export const errorHandler: ErrorRequestHandler = async (err, _req, res, _next) =
   if (err?.code === '23514' || err?.code === '23505') {
     res.status(409).json({error:{code:'CONFLICT',message:'This action conflicts with the current state. Please refresh and try again.'}}); return;
   }
-  if (typeof err?.message === 'string' && (err.message.endsWith('_NOT_CONFIGURED') || err.message === 'DATABASE_NOT_CONFIGURED')) {
+  if (isNotConfigured(err) || err?.message === 'DATABASE_NOT_CONFIGURED') {
+    // Logged as a category only, so an operator can find it without exposing any secret.
+    console.error(JSON.stringify({level:'error',event:'request_failed',category:(err as Error).message}));
     res.status(503).json({error:{code:'NOT_CONFIGURED',message:'This service has not been configured yet.'}}); return;
   }
   // Only allowlisted failure categories are logged; never raw provider messages.

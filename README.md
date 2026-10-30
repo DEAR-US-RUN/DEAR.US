@@ -180,6 +180,7 @@ Set `CRON_SECRET` for production; Vercel should invoke `/api/cron/cleanup` with 
 Before real use, verify in a nonproduction environment with test data:
 
 - `GET /api/health` returns `{"ok":true}`; unauthenticated `GET /api/me` and `GET /api/cron/cleanup` return 401, not the SPA HTML. Deep links and nested API paths route correctly. The rewrite adapter has a local unit test but has not been exercised on Vercel.
+- If the Google popup completes but the app stays on the sign-in screen, follow [docs/LOGIN-TROUBLESHOOTING.md](docs/LOGIN-TROUBLESHOOTING.md): the message shown there identifies the fault, and three `curl` checks separate routing, missing environment variables and `APP_ORIGINS` mismatches.
 - Real Google popup, new-account sync, repeat sign-in, sign-out, token expiry/revocation and disabled accounts work. Confirm only a valid Google Firebase ID token is accepted.
 - Create two accounts and a connected diary, accept exactly one invite, verify personal/private entries and media are inaccessible to the other account, verify both vault approvals and target reminder behavior, and verify caps under concurrent requests.
 - Check editing, offline/interrupted saves, conflicting tabs, refresh/recovery, repeated publication and immutable entries. Inspect the database and bucket to confirm content and media are ciphertext and published object versions stay available after a presigned POST is replayed.
