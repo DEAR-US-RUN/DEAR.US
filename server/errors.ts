@@ -6,6 +6,17 @@ export class AppError extends Error {
 }
 /** Server configuration faults (missing or malformed credentials) must never be
  * reported as an expired user session; they are reported as 503 NOT_CONFIGURED. */
+/** Never log a connection string, token or key that a provider error may echo back. */
+export function redactSecret(value: string) {
+  return value.replace(/\b([a-z][a-z0-9+.-]*):\/\/[^@/\s]*@/gi, '$1://***@').slice(0, 300);
+}
+/** Error class plus a redacted message, for startup faults that would otherwise be silent. */
+export function describeError(error: unknown) {
+  return {
+    errorClass: error instanceof Error ? error.constructor.name || 'Error' : 'Error',
+    message: redactSecret(String((error as { message?: unknown } | null)?.message || '')),
+  };
+}
 export const isNotConfigured = (error: unknown): boolean =>
   typeof (error as { message?: unknown } | null)?.message === 'string' && (error as Error).message.endsWith('_NOT_CONFIGURED');
 
