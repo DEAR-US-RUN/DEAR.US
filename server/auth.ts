@@ -1,7 +1,7 @@
 import type { NextFunction, Request, Response } from 'express';
 import { getApps, initializeApp, cert } from 'firebase-admin/app';
 import { getAuth, type DecodedIdToken } from 'firebase-admin/auth';
-import { AppError, forbidden } from './errors';
+import { AppError, forbidden, isNotConfigured } from './errors';
 import { query } from './db';
 
 export type Identity = { uid:string; email?:string; name?:string; picture?:string; auth_time:number; firebase?:{sign_in_provider?:string;sign_in_second_factor?:string} };
@@ -10,14 +10,22 @@ export type TokenVerifier = (token:string) => Promise<Identity>;
 function admin() {
   if (process.env.NODE_ENV==='production' && process.env.FIREBASE_AUTH_EMULATOR_HOST) throw new Error('FIREBASE_NOT_CONFIGURED');
   if (!getApps().length) {
-    const {FIREBASE_PROJECT_ID:projectId,FIREBASE_CLIENT_EMAIL:clientEmail,FIREBASE_PRIVATE_KEY:privateKey}=process.env;
-    if (process.env.FIREBASE_AUTH_EMULATOR_HOST) {
-      // Emulator tokens are unsigned; permit only an explicit local demo project outside production.
-      if(!projectId?.startsWith('demo-') || !/^(127\.0\.0\.1|localhost):\d+$/.test(process.env.FIREBASE_AUTH_EMULATOR_HOST))throw new Error('FIREBASE_NOT_CONFIGURED');
-      initializeApp({projectId});
-    } else {
-      if (!projectId || !clientEmail || !privateKey) throw new Error('FIREBASE_NOT_CONFIGURED');
-      initializeApp({credential:cert({projectId,clientEmail,privateKey:privateKey.replace(/\\n/g,'\n')})});
+    try {
+      const {FIREBASE_PROJECT_ID:projectId,FIREBASE_CLIENT_EMAIL:clientEmail,FIREBASE_PRIVATE_KEY:privateKey}=process.env;
+      if (process.env.FIREBASE_AUTH_EMULATOR_HOST) {
+        // Emulator tokens are unsigned; permit only an explicit local demo project outside production.
+        if(!projectId?.startsWith('demo-') || !/^(127\.0\.0\.1|localhost):\d+$/.test(process.env.FIREBASE_AUTH_EMULATOR_HOST))throw new Error('FIREBASE_NOT_CONFIGURED');
+        initializeApp({projectId});
+      } else {
+        if (!projectId || !clientEmail || !privateKey) throw new Error('FIREBASE_NOT_CONFIGURED');
+        initializeApp({credential:cert({projectId,clientEmail,privateKey:privateKey.replace(/\\n/g,'\n')})});
+      }
+      // Resolve the credential now: a malformed service-account key is a deployment fault and must be
+      // reported as one, never as an expired user session. The key is never logged or returned.
+      getAuth();
+    } catch (error) {
+      if (isNotConfigured(error)) throw error;
+      throw new Error('FIREBASE_CREDENTIAL_NOT_CONFIGURED');
     }
   }
   return getAuth();
@@ -32,7 +40,7 @@ export function authenticate(verifier:TokenVerifier=verifyFirebase) {
       if (!identity.uid || identity.firebase?.sign_in_provider !== 'google.com') throw new Error('Invalid provider');
       req.identity=identity; next();
     } catch (error:any) {
-      if (error?.message === 'FIREBASE_NOT_CONFIGURED') return next(error);
+      if (isNotConfigured(error)) return next(error);
       next(new AppError(401,'UNAUTHENTICATED','Your session expired. Sign in again.'));
     }
   };

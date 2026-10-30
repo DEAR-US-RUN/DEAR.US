@@ -7,6 +7,8 @@ export function originGuard(req:Request,_res:Response,next:NextFunction) {
   if (!origin) return next();
   const allowed=(process.env.APP_ORIGINS||'').split(',').map(x=>x.trim()).filter(Boolean);
   if (allowed.includes(origin) || (process.env.NODE_ENV !== 'production' && allowed.length===0)) return next();
+  // Category only: the deployment's APP_ORIGINS does not include the browser origin.
+  console.error(JSON.stringify({level:'error',event:'request_failed',category:'ORIGIN_DENIED'}));
   next(new AppError(403,'ORIGIN_DENIED','This request is not allowed.'));
 }
 export function rateLimit(scope:string, limit:number, seconds:number, useUser=false) {
