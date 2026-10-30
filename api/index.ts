@@ -16,6 +16,7 @@ function load() {
       .then(module => {
         const app = (module.default ?? module.createApp()) as Listener;
         listener = app;
+        console.log(JSON.stringify({ level: 'info', event: 'api_ready', node: process.version }));
         return app;
       })
       .catch(error => {
