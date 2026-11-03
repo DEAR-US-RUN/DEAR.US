@@ -275,3 +275,35 @@ html[data-theme='dark'] .entry-card {
     linear-gradient(90deg, transparent 0 39px, #c7867520 39px 40px, transparent 40px),
     repeating-linear-gradient(180deg, transparent 0 31px, #d7c69a0c 31px 32px);
 }
+html[data-theme='dark'] {
+  --green: #e4b5ac;
+  --ink: #f1e8db;
+  --muted: #c0aeb0;
+  --rose: #e09a8e;
+  --cream: #201822;
+  --line: #493749;
+}
+html[data-theme='dark'] body { background: #1c151f; }
+html[data-theme='dark'] .sidebar { background: linear-gradient(90deg,#1f1722 0 10px,#332337 10px 100%); border-color: #211725; }
+html[data-theme='dark'] .nav-link.active { background: #f0e5d2; color: #4d3548; box-shadow: inset 3px 0 #b56558; }
+html[data-theme='dark'] .sidebar-note { background: #433045; border-color: #71536a; }
+html[data-theme='dark'] .sidebar-note p { color: #f2e4d2; }
+html[data-theme='dark'] .sidebar-note em,html[data-theme='dark'] .note-icon { color: #e3a298; }
+html[data-theme='dark'] .topbar { background: #302335; border-color: #4c394d; }
+html[data-theme='dark'] .breadcrumb { color: #c9b6ba; }
+html[data-theme='dark'] .breadcrumb strong,html[data-theme='dark'] .profile-link { color: #f2e7dc; }
+html[data-theme='dark'] .top-security { color: #c4aeb0; }
+html[data-theme='dark'] .main-shell { background: #1c151f; }
+html[data-theme='dark'] .page { background-color: #241b27; background-image: linear-gradient(90deg,transparent 0 27px,#d5867920 27px 28px,transparent 28px),repeating-linear-gradient(180deg,transparent 0 33px,#ead6bd0a 33px 34px); border-color: #423246; }
+html[data-theme='dark'] .button-primary { background: #ad595a; color: #fff5e7; }
+html[data-theme='dark'] .button-outline { background: #2d2230; border-color: #74546d; color: #eedbd5; }
+html[data-theme='dark'] .section-heading h2,html[data-theme='dark'] .aside-heading h2,html[data-theme='dark'] .content-heading h2 { color: #f0e3d5; }
+html[data-theme='dark'] .diary-card,html[data-theme='dark'] .connection-card,html[data-theme='dark'] .entry-card,html[data-theme='dark'] .editor-shell,html[data-theme='dark'] .settings-card,html[data-theme='dark'] .join-card,html[data-theme='dark'] .vault-list-item,html[data-theme='dark'] .vault-explanation>div { background: #2a202d; border-color: #4e3a4f; color: #f0e5d7; }
+html[data-theme='dark'] .diary-card-body { background-color: #2a202d; background-image: repeating-linear-gradient(180deg,transparent 0 29px,#ead6bd0c 29px 30px); }
+html[data-theme='dark'] .diary-card-title h3,html[data-theme='dark'] .entry-card h3 { color: #f0e5d7; }
+html[data-theme='dark'] .diary-card-title p,html[data-theme='dark'] .card-meta,html[data-theme='dark'] .entry-text { color: #ccb9b4; }
+html[data-theme='dark'] .below-cards,html[data-theme='dark'] .connection-stats { background: #35283a; border-color: #594257; }
+html[data-theme='dark'] .below-cards strong,html[data-theme='dark'] .connection-stats strong,html[data-theme='dark'] .connection-row strong { color: #f1e6d8; }
+html[data-theme='dark'] .connection-stats span,html[data-theme='dark'] .connection-status,html[data-theme='dark'] .connection-people p,html[data-theme='dark'] .connection-row small { color: #c8b3b0; }
+html[data-theme='dark'] .reminder-card { background: #3a2933; border-color: #64404a; }
+html[data-theme='dark'] .journal-spread { border-color: #bda77f; background: #f8efde; }

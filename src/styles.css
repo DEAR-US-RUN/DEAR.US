@@ -286,3 +286,124 @@ body {
   .diary-cover { height: 130px; }
   .editor-paper { padding-left: 38px; }
 }
+
+/* Original folio direction: plum cloth, ink, and an open two-page spread. */
+:root { --green:#593d50; --ink:#382d38; --muted:#8d7d79; --rose:#a95354; --cream:#faf2e3; --line:#e5d6bd; }
+body { background:#61504b; background-image:none; }
+.sidebar { background:linear-gradient(90deg,#2c202c 0 10px,#3d2e40 10px 100%); border-right:1px solid #261b27; box-shadow:5px 0 24px #21182030; }
+.brand-mark { border-color:#a99578; color:#f1dfbd; }
+.brand-dot { color:#d28d73; }
+.sidebar-label { color:#c6b499; letter-spacing:.22em; }
+.nav-link { color:#e0d7c9; border-radius:2px; }
+.nav-link:hover { background:#514052; color:#fff8eb; }
+.nav-link.active { background:#f5ead4; color:#493747; box-shadow:inset 3px 0 #b56558; }
+.sidebar-note { flex:0 0 auto; background:#f0e3c9; border-color:#d1bd99; border-radius:2px; box-shadow:2px 4px 0 #241b283d; }
+.sidebar-note p { color:#493a45; }
+.sidebar-note em { color:#a45154; }
+.sidebar-note>span { color:#81735e; }
+.note-icon { border-color:#a99173; color:#a45154; }
+.sidebar-note:after { border-color:#a45154; }
+.sidebar-bottom { border-color:#665166; }
+.main-shell { background:#61504b; }
+.topbar { background:#f4ead8; border-color:#d7c7ae; box-shadow:0 3px 12px #2c1e2412; }
+.breadcrumb { color:#8b7776; }
+.breadcrumb strong { color:#51394d; }
+.breadcrumb-slash { color:#b99883; }
+.top-security { color:#79685d; }
+.profile-link { color:#463643; }
+.top-divider { background:#d8c6ad; }
+.preview-strip { background:#ebddc8; border-color:#d8c4a9; color:#705d58; }
+.preview-pill { background:#ddc5ac; color:#754852; border-radius:2px; }
+.preview-strip button { color:#8e4e4e; }
+.page { background-color:#faf2e3; background-image:linear-gradient(90deg,transparent 0 27px,#aa5e5428 27px 28px,transparent 28px),repeating-linear-gradient(180deg,transparent 0 33px,#8b72510d 33px 34px); border-color:#e2d2b9; box-shadow:0 8px 28px #261b2430; }
+.greeting-row h1,.simple-page>h1,.diary-heading h1,.owner-page>h1 { color:#3a2e3b; }
+.eyebrow,.greeting-date { color:#8c706d; }
+.heading-period { color:#ae5756; }
+.page-subtitle,.section-heading p,.aside-heading p,.content-heading p { color:#877a72; }
+.button { border-radius:2px; }
+.button-primary { background:#593d50; color:#fff6e7; box-shadow:0 2px 0 #342435; }
+.button-primary:not(:disabled):hover { background:#472f43; }
+.button-outline { background:#fcf5e7; border-color:#c9b594; color:#654353; }
+.button-outline:not(:disabled):hover,.button-ghost:hover { background:#eee1cc; }
+.button-ghost { color:#765d63; }
+.journal-spread { position:relative; display:grid; grid-template-columns:minmax(0,1fr) minmax(0,1fr); min-height:248px; margin-bottom:36px; border:1px solid #cfb894; background:#f8efde; box-shadow:0 11px 0 #c8b290,0 17px 30px #2b20274a; }
+.journal-spread:after { content:''; position:absolute; z-index:2; top:0; bottom:0; left:50%; width:16px; transform:translateX(-50%); background:linear-gradient(90deg,#745b4d00,#71574620 45%,#fff9e5a8 52%,#745b4d00); pointer-events:none; }
+.journal-leaf { position:relative; min-width:0; padding:19px 23px 24px; }
+.journal-leaf-left { background-color:#faf2e3; background-image:repeating-linear-gradient(180deg,transparent 0 32px,#8b72510c 32px 33px); }
+.journal-leaf-right { display:flex; flex-direction:column; justify-content:center; align-items:center; gap:8px; background:#f4e9d5; box-shadow:inset 11px 0 15px -17px #3c293a; }
+.folio-edition { display:flex; justify-content:space-between; align-items:center; gap:8px; color:#907a68; font-size:8px; font-weight:700; letter-spacing:.14em; }
+.folio-edition-mark { border:1px solid #bc9d78; padding:4px 6px; color:#8d4b51; font-size:7px; letter-spacing:.12em; }
+.folio-date { margin-top:24px; color:#a45453; font-size:8px; font-weight:700; letter-spacing:.16em; }
+.folio-salutation { margin-top:12px; color:#6b4c5c; font:italic 17px 'Playfair',Georgia,serif; }
+.journal-leaf-left h2 { margin-top:6px; color:#382e3a; font:500 26px/1.1 'Playfair',Georgia,serif; letter-spacing:-.045em; }
+.journal-leaf-left h2 em { color:#a55258; font-weight:400; }
+.folio-copy { margin-top:10px; color:#7b6b62; font-size:10px; line-height:1.6; }
+.journal-link { display:inline-flex; align-items:center; gap:7px; margin-top:12px; padding-bottom:3px; border-bottom:1px solid #b18c74; color:#654354; font-size:9px; font-weight:700; }
+.folio-footnote { position:absolute; bottom:10px; left:23px; color:#a18e75; font-size:7px; letter-spacing:.15em; }
+.folio-photo { width:100%; max-width:220px; margin:0; transform:rotate(1.2deg); }
+.folio-photo img { display:block; width:100%; height:142px; object-fit:cover; border:6px solid #fffaf0; box-shadow:1px 4px 12px #55442a2b; filter:saturate(.72) sepia(.12); }
+.folio-photo figcaption { padding-top:6px; color:#5d4657; font:italic 12px 'Playfair',Georgia,serif; text-align:center; }
+.folio-photo-note { display:flex; align-items:center; gap:6px; color:#9b5a58; font:italic 10px 'Playfair',Georgia,serif; }
+.folio-bookmark { position:absolute; z-index:3; top:-1px; right:25px; width:14px; height:38px; background:#a75153; clip-path:polygon(0 0,100% 0,100% 100%,50% 78%,0 100%); }
+.folio-page-number { position:absolute; right:15px; bottom:10px; color:#a18e75; font:italic 10px 'Playfair',Georgia,serif; }
+.section-heading h2,.aside-heading h2,.content-heading h2 { color:#413342; }
+.section-count { background:#e9ddc7; color:#704d61; border-radius:2px; }
+.text-action,.card-open,.connection-footer { color:#784b58; }
+.diary-card { background:#fcf6e9; border-color:#dfceb2; border-radius:2px; box-shadow:2px 4px 0 #dac9ad,0 8px 17px #38293516; }
+.diary-card:before { background:linear-gradient(90deg,#684450b0,#fff6e68c); }
+.diary-cover { height:148px; background:#d8cbb7; }
+.diary-cover img { filter:saturate(.76) sepia(.1); }
+.diary-cover:after { background:linear-gradient(180deg,#2d1d2924,transparent 52%,#2d1d2938); }
+.cover-badge { background:#faf0dfed; color:#684d57; border-radius:1px; }
+.cover-badge-personal { color:#9f5356; }
+.cover-arrow { background:#faf0dfed; color:#563b50; }
+.diary-card-body { background-color:#fcf6e9; background-image:repeating-linear-gradient(180deg,transparent 0 29px,#8b72510c 29px 30px); }
+.diary-card-title h3 { color:#443645; }
+.diary-card-title p,.card-meta,.card-bottom>span:not(.card-open) { color:#88776d; }
+.card-heart { color:#a65457; }
+.card-bottom,.page-end { border-color:#e1d2ba; }
+.below-cards,.connection-stats { background:#eee2cd; border-color:#ddcbae; border-radius:2px; }
+.below-icon { background:#e7d8c0; color:#83566a; }
+.below-cards strong { color:#463747; }
+.below-cards span { color:#83756b; }
+.connection-card { background:#f8efdf; border-color:#e0cfb3; border-radius:2px; box-shadow:2px 4px 0 #dfcfb3; }
+.connection-stats { border-color:#dfcfb3; }
+.connection-stats strong,.connection-row strong { color:#523b50; }
+.connection-stats span,.connection-status,.connection-people p,.connection-row small { color:#86746c; }
+.connection-divider { background:#dfcfb3; }
+.connection-footer { color:#784b58; }
+.connection-icon,.rose-icon { background:#f0dfd0; color:#a55355; }
+.gold-icon { background:#eee2c3; color:#98723e; }
+.reminder-card { background:#eee1d3; border-color:#deccbc; border-radius:2px; color:#6c4e58; }
+.reminder-card .eyebrow { color:#8f5c60; }
+.reminder-card p { color:#5b4852; }
+.reminder-card em,.reminder-icon { color:#a64f54; }
+.reminder-next { background:#f8eee1; border-color:#dbc6ad; color:#9d5455; }
+.diary-kind span,.entry-badge { background:#eadfcf; color:#714b5c; border-radius:2px; }
+.connection-bar { background:#f8efdf; border-color:#e0cfb3; border-radius:2px; }
+.diary-tabs { border-color:#e0d0b8; }
+.diary-tabs button { color:#88766e; }
+.diary-tabs button.active { color:#684056; border-color:#ae5558; }
+.entry-card { background-color:#fcf6e9; border-color:#e1d2bb; border-radius:2px; box-shadow:2px 4px 0 #e1d2bb; }
+.entry-card h3 { color:#453647; }
+.entry-text { color:#62575a; }
+.editor-shell,.settings-card,.join-card,.vault-list-item,.vault-explanation>div { background:#f8efdf; border-color:#e0cfb3; border-radius:2px; }
+.editor-paper { background-color:#fff9ed; border-color:#e2d2b9; border-radius:2px; }
+.editor-title { color:#48364a; }
+.editor-body { color:#564a53; }
+.field input,.field select,.field textarea,.copy-field input { background:#fff9ed; border-color:#ddcbb0; border-radius:2px; color:#453646; }
+.modal { background:#faf2e3; border-color:#dfceb2; border-radius:2px; }
+.modal-header h2 { color:#453646; }
+.page-end { color:#8d7a6d; }
+@media (max-height:600px) { .sidebar-note { display:none; } }
+@media (max-width:700px) {
+  .journal-spread { grid-template-columns:minmax(0,1fr); box-shadow:0 8px 0 #c8b290,0 13px 22px #2b202740; }
+  .journal-spread:after { display:none; }
+  .journal-leaf { padding:18px 21px 25px; }
+  .journal-leaf-left { min-height:248px; }
+  .journal-leaf-right { min-height:250px; border-top:1px solid #d8c6ad; box-shadow:inset 0 9px 13px -15px #3c293a; }
+  .folio-photo { max-width:270px; }
+  .folio-photo img { height:158px; }
+  .dashboard-page { padding:27px 19px 24px; }
+}
+@media (max-width:390px) { .journal-leaf-left h2 { font-size:24px; } }

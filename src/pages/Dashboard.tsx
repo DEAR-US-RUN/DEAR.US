@@ -12,15 +12,26 @@ import { dateLabel,reminder } from '../format';
 export function Dashboard(){
  const {preview,user}=useAuth();const person=preview?sampleUser:user!;const {diaries,loading,error,reload}=useDiaries();const [creating,setCreating]=useState(false);const [connectionInfo,setConnectionInfo]=useState(false);const navigate=useNavigate();
  const connected=diaries.find(d=>d.kind==='connected');const full=!preview&&diaries.length>=2;
- const greeting=(()=>{const h=new Date().getHours();return h<12?'Good morning':h<17?'Good afternoon':'Good evening';})();
  return <div className="page dashboard-page">
-  <div className="greeting-row"><div><p className="eyebrow greeting-date">{dateLabel(new Date(),{weekday:'long',month:'long',day:'numeric'}).toUpperCase()}</p><h1>{greeting}, {person.name.split(' ')[0]}<span className="heading-period">.</span> <span className="hello-sparkle">✳</span></h1><p className="page-subtitle">A little room for all the things you want to remember.</p></div><button className="button button-primary top-add" onClick={()=>setCreating(true)} disabled={full}><Plus size={16}/> Add diary</button></div>
-  <section className="welcome-banner" aria-label="Welcome">
-   <div className="banner-copy"><div className="banner-kicker"><span className="banner-kicker-line"/> A NOTE FROM TODAY</div><h2>Today is a story<br/><em>worth keeping.</em></h2><p>Some days, a sentence is enough.<br className="desktop-break"/> Start wherever you are.</p><a href="#diaries" className="banner-link">Turn to your pages <ArrowRight size={15}/></a></div>
-   <div className="banner-photo"><img src="/images/flowers.jpg" alt="A small bouquet of wildflowers resting on linen"/></div>
-   <div className="banner-stamp"><Heart size={16} strokeWidth={1.4}/><span>kept close<br/>to the heart</span></div><div className="banner-star star-one">✳</div><div className="banner-star star-two">✦</div>
+  <div className="greeting-row"><div><p className="eyebrow greeting-date">{dateLabel(new Date(),{weekday:'long',month:'long',day:'numeric'}).toUpperCase()}</p><h1>Dear {person.name.split(' ')[0]}<span className="heading-period">,</span></h1><p className="page-subtitle">Your life, one page at a time.</p></div><button className="button button-primary top-add" onClick={()=>setCreating(true)} disabled={full}><Plus size={16}/> Add diary</button></div>
+  <section className="journal-spread" aria-label="A page from your diary">
+   <div className="journal-leaf journal-leaf-left">
+    <div className="folio-edition"><span>DEAR, US. / VOL. 01</span><span className="folio-edition-mark">PRIVATE</span></div>
+    <p className="folio-date">{dateLabel(new Date(),{month:'long',day:'numeric',year:'numeric'}).toUpperCase()}</p>
+    <p className="folio-salutation">Dear {person.name.split(' ')[0]},</p>
+    <h2>Keep a little<br/><em>room for wonder.</em></h2>
+    <p className="folio-copy">Some days need only one good sentence.<br className="desktop-break"/> Let this be yours.</p>
+    <a href="#diaries" className="journal-link">Visit your diaries <ArrowRight size={15}/></a>
+    <span className="folio-footnote">A PLACE TO PUT IT ALL</span>
+   </div>
+   <div className="journal-leaf journal-leaf-right">
+    <span className="folio-bookmark" aria-hidden="true"/>
+    <figure className="folio-photo"><img src="/images/flowers.jpg" alt="Wildflowers gathered on a quiet afternoon"/><figcaption>Little things. Kept close.</figcaption></figure>
+    <div className="folio-photo-note"><Heart size={14} strokeWidth={1.5}/><span>A small thing, kept.</span></div>
+    <span className="folio-page-number">02</span>
+   </div>
   </section>
-  <div className="dashboard-grid"><section id="diaries" className="diaries-section"><div className="section-heading"><div><span className="eyebrow">PAGES KEPT CLOSE</span><h2>Your diaries <span className="section-count">{diaries.length}/2</span></h2><p>Little chapters, all in one place.</p></div><button className="text-action" onClick={()=>setCreating(true)} disabled={full}><Plus size={15}/> Add diary</button></div>
+  <div className="dashboard-grid"><section id="diaries" className="diaries-section"><div className="section-heading"><div><span className="eyebrow">THE INDEX</span><h2>Your diaries <span className="section-count">{diaries.length}/2</span></h2><p>Little chapters, all in one place.</p></div><button className="text-action" onClick={()=>setCreating(true)} disabled={full}><Plus size={15}/> Add diary</button></div>
    {full&&<p className="limit-note">You have reached the two-diary limit for this version.</p>}
    {loading?<div className="cards-grid"><div className="skeleton-card"/><div className="skeleton-card"/></div>:error?<div className="empty-card"><p>{error}</p><button className="button button-outline" onClick={()=>void reload()}>Try again</button></div>:diaries.length?<div className="cards-grid">{diaries.map((d,i)=><DiaryCard key={d.id} diary={d} index={i}/>)}</div>:<div className="empty-card"><div className="empty-icon"><BookHeart/></div><h3>Your story starts here.</h3><p>Make a little space for your thoughts, memories, and everything in between.</p><button className="button button-primary" onClick={()=>setCreating(true)}><Plus size={16}/> Create your first diary</button></div>}
    <div className="below-cards"><div className="below-icon"><Sparkles size={18}/></div><div><strong>Every page is yours.</strong><span>Write freely, at your own pace. There’s no right way to begin.</span></div><Heart className="below-heart" size={21} strokeWidth={1.2}/></div>
