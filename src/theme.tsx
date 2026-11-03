@@ -6,13 +6,13 @@ export type ResolvedTheme='dark'|'light';
 const STORAGE_KEY='dear-us:appearance';
 
 export function parseThemePreference(value:string|null):ThemePreference {
- return value==='light'||value==='system'||value==='dark'?value:'dark';
+ return value==='light'||value==='system'||value==='dark'?value:'light';
 }
 export function resolveTheme(preference:ThemePreference,systemDark:boolean):ResolvedTheme {
  return preference==='system'?(systemDark?'dark':'light'):preference;
 }
 function storedPreference():ThemePreference {
- try{return parseThemePreference(localStorage.getItem(STORAGE_KEY));}catch{return 'dark';}
+ try{return parseThemePreference(localStorage.getItem(STORAGE_KEY));}catch{return 'light';}
 }
 function systemPrefersDark():boolean {
  return typeof window==='undefined'||typeof window.matchMedia!=='function'||window.matchMedia('(prefers-color-scheme: dark)').matches;
@@ -21,7 +21,7 @@ function applyTheme(preference:ThemePreference):ResolvedTheme {
  const theme=resolveTheme(preference,systemPrefersDark());
  document.documentElement.dataset.theme=theme;
  document.documentElement.dataset.themePreference=preference;
- document.querySelector('meta[name="theme-color"]')?.setAttribute('content',theme==='dark'?'#101c17':'#f8f9f4');
+ document.querySelector('meta[name="theme-color"]')?.setAttribute('content',theme==='dark'?'#211a18':'#f5efe4');
  return theme;
 }
 // Run before React renders so a saved choice does not flash the wrong page theme.
