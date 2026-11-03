@@ -250,3 +250,28 @@ html[data-theme='dark'] .boot-screen { background: #101a16; color: #e4eddf; }
   .breadcrumb>span { display: none; }
   .top-actions { gap: 8px; }
 }
+
+html[data-theme='dark'] body { background-color: #101a16; }
+html[data-theme='dark'] .main-shell { background: #101a16; }
+html[data-theme='dark'] .page {
+  background-color: #19271f;
+  background-image:
+    linear-gradient(90deg, transparent 0 26px, #c786751c 26px 27px, transparent 27px),
+    repeating-linear-gradient(180deg, transparent 0 31px, #d7c69a0a 31px 32px);
+  border-color: #2c3b30;
+  box-shadow: 0 5px 25px #0003;
+}
+html[data-theme='dark'] .diary-card-body {
+  background-color: #1a2a21;
+  background-image: repeating-linear-gradient(180deg, transparent 0 29px, #d7c69a0c 29px 30px);
+}
+html[data-theme='dark'] .editor-paper {
+  background-image:
+    linear-gradient(90deg, transparent 0 39px, #c7867520 39px 40px, transparent 40px),
+    repeating-linear-gradient(180deg, transparent 0 30px, #d7c69a12 30px 31px);
+}
+html[data-theme='dark'] .entry-card {
+  background-image:
+    linear-gradient(90deg, transparent 0 39px, #c7867520 39px 40px, transparent 40px),
+    repeating-linear-gradient(180deg, transparent 0 31px, #d7c69a0c 31px 32px);
+}

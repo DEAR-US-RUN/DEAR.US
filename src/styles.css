@@ -29,3 +29,260 @@
 .personal-reminder{display:flex;align-items:center;gap:9px;margin-top:25px;padding:15px 17px;background:#f5f5e9;border:1px solid #ecebd9;border-radius:6px;color:#7d8264;font-size:11px}
 @media(min-width:701px){.mobile-menu{display:none}}
 .connection-explainer{font-size:10px;color:#6e826f;margin-top:9px}
+
+/* Paper, ink, and cloth-bound details turn the app into a lived-in journal. */
+:root {
+  --green: #425a43;
+  --ink: #403b30;
+  --muted: #877d69;
+  --rose: #b97766;
+  --cream: #fcf7eb;
+  --line: #e5dac6;
+  color: var(--ink);
+  background: #eee7d9;
+}
+body {
+  color: var(--ink);
+  background-color: #eee7d9;
+  background-image: radial-gradient(#8d7950 0.45px, transparent 0.55px);
+  background-size: 7px 7px;
+}
+.sidebar {
+  background: linear-gradient(90deg, #253327 0 9px, #344634 9px 100%);
+  border-right: 1px solid #27352a;
+  box-shadow: 5px 0 20px #433d2b12;
+}
+.brand-mark { border-color: #9a9b76; color: #e8d7b7; }
+.brand-dot { color: #d5a28e; }
+.sidebar-label { color: #d1c6a8; letter-spacing: .2em; }
+.nav-link { color: #e0dfcf; border-radius: 3px; }
+.nav-link:hover { background: #405441; color: #fffaf0; }
+.nav-link.active {
+  background: #f2e9d4;
+  color: #384b37;
+  box-shadow: inset 3px 0 #b97766;
+}
+.sidebar-note {
+  background: linear-gradient(145deg, #eee4cb, #e4d7b9);
+  border: 1px solid #d8c9a9;
+  border-radius: 2px;
+  color: #4a513d;
+  box-shadow: 1px 3px 8px #17241920;
+}
+.sidebar-note p { color: #42503e; }
+.sidebar-note em { color: #a56c5e; }
+.sidebar-note>span { color: #80775f; }
+.note-icon { border-color: #9e9a75; color: #a76e5e; }
+.sidebar-bottom { border-color: #65715c; }
+.main-shell { background: #eee7d9; }
+.topbar {
+  background: #f7f1e5;
+  border-color: #ded4c1;
+  box-shadow: 0 2px 7px #403a2d0a;
+}
+.breadcrumb { color: #887d69; }
+.breadcrumb strong { color: #415440; }
+.breadcrumb-slash { color: #c0ad91; }
+.top-security { color: #64745c; }
+.profile-link { color: #45483a; }
+.top-divider { background: #ded3bd; }
+.preview-strip {
+  background: #eee3d1;
+  border-color: #dfd1b9;
+  color: #766b59;
+}
+.preview-pill { background: #e0cdb6; color: #735448; border-radius: 2px; }
+.preview-strip button { color: #775448; }
+.page {
+  position: relative;
+  min-height: calc(100vh - 68px);
+  background-color: #fcf7eb;
+  background-image:
+    linear-gradient(90deg, transparent 0 26px, #c7867527 26px 27px, transparent 27px),
+    repeating-linear-gradient(180deg, transparent 0 31px, #927d5510 31px 32px);
+  border-left: 1px solid #e9deca;
+  border-right: 1px solid #e9deca;
+  box-shadow: 0 5px 25px #4d412918;
+}
+.greeting-row h1,.simple-page>h1,.diary-heading h1,.owner-page>h1 {
+  color: #403a2e;
+  letter-spacing: -.045em;
+}
+.greeting-date,.eyebrow { color: #82745a; }
+.page-subtitle,.section-heading p,.aside-heading p,.content-heading p { color: #7e7768; }
+.heading-period { color: #b97766; }
+.button { border-radius: 3px; }
+.button-primary {
+  background: #465b43;
+  color: #fffaf0;
+  box-shadow: 0 2px 0 #29392b;
+}
+.button-primary:not(:disabled):hover { background: #354a37; }
+.button-outline {
+  border-color: #c7b99e;
+  color: #4b5d44;
+  background: #fcf8ee;
+}
+.button-outline:not(:disabled):hover,.button-ghost:hover { background: #eee5d3; }
+.button-ghost { color: #70634e; }
+.welcome-banner {
+  min-height: 218px;
+  height: auto;
+  background: #eee6d2;
+  border: 1px solid #ded2b8;
+  border-radius: 3px;
+  box-shadow: 2px 4px 0 #ddd0b8, 0 8px 18px #574a2b12;
+}
+.welcome-banner:before { border-color: #8790712e; }
+.banner-copy { padding: 29px 34px; }
+.banner-kicker { color: #7b765d; }
+.banner-kicker-line { background: #b97766; }
+.banner-copy h2 { color: #3e4e3c; font-size: 29px; }
+.banner-copy h2 em { color: #aa6e60; }
+.banner-copy>p { color: #776f5d; }
+.banner-link { color: #4c6045; border-color: #a9a184; }
+.banner-photo { height: auto; align-self: stretch; }
+.banner-photo:before { background: linear-gradient(90deg, #eee6d2 0%, #eee6d233 24%, #1f372608 100%); }
+.sidebar-note:after { content: ''; width: 9px; height: 9px; border: 1px solid #a56c5e; transform: rotate(45deg); top: 18px; right: 17px; }
+.nav-sparkle { display: none; }
+.banner-star { font-size: 0; }
+.banner-star:before { content: ''; display: block; width: 8px; height: 8px; border: 1px solid currentColor; transform: rotate(45deg); }
+.banner-photo img { mix-blend-mode: multiply; filter: saturate(.78) sepia(.08); opacity: .78; }
+.banner-stamp { color: #7d805f; border-color: #88896c88; background: #f2ead2a6; }
+.banner-star { color: #ad8d65; }
+.diary-card {
+  position: relative;
+  background: #fffaf0;
+  border: 1px solid #e4d8c3;
+  border-radius: 3px;
+  box-shadow: 2px 3px 0 #e3d8c4, 0 7px 16px #51462d12;
+  transition: transform .2s ease, box-shadow .2s ease;
+}
+.diary-card:before {
+  content: '';
+  position: absolute;
+  z-index: 2;
+  inset: 0 auto 0 0;
+  width: 5px;
+  background: linear-gradient(90deg, #344432a8, #faf1dd6b);
+  pointer-events: none;
+}
+.diary-card:hover {
+  transform: translateY(-2px) rotate(-.15deg);
+  box-shadow: 3px 5px 0 #dfd2bc, 0 11px 20px #51462d20;
+}
+.diary-cover { height: 148px; background: #d9d1bd; }
+.diary-cover img { filter: saturate(.8) sepia(.08); }
+.diary-cover:after { background: linear-gradient(180deg, #252a1d28, transparent 50%, #252a1d46); }
+.cover-badge { border-radius: 2px; background: #f8f0dfed; color: #53664a; }
+.cover-badge-personal { color: #985f55; }
+.cover-arrow { border-radius: 50%; background: #f8f0dfed; color: #465b43; }
+.diary-card-body {
+  background-color: #fffaf0;
+  background-image: repeating-linear-gradient(180deg, transparent 0 29px, #927d550d 29px 30px);
+}
+.diary-card-title h3 { color: #433d30; }
+.diary-card-title p,.card-meta,.card-bottom>span:not(.card-open) { color: #817762; }
+.card-heart { color: #ac7766; }
+.card-bottom { border-color: #e5dbc8; }
+.card-open,.connection-footer,.text-action { color: #4b6147; }
+.section-count { background: #ece6d5; color: #6c7559; border-radius: 2px; }
+.below-cards {
+  background: #f2ead8;
+  border: 1px solid #e5d8bf;
+  border-radius: 2px;
+}
+.below-icon { background: #e5e6d6; color: #687353; }
+.below-cards strong { color: #4c4b3b; }
+.below-cards span { color: #817760; }
+.connection-card {
+  background: #f7f0e2;
+  border: 1px solid #e2d5bd;
+  border-radius: 3px;
+  box-shadow: 2px 3px 0 #e3d8c4;
+}
+.connection-stats { background: #eee7d5; border-color: #e0d4bd; }
+.connection-stats strong { color: #4b5c45; }
+.connection-stats span,.connection-status { color: #81775f; }
+.connection-row strong { color: #433f32; }
+.connection-divider { background: #e2d6c2; }
+.reminder-card {
+  background: #efe3d2;
+  border: 1px solid #e1d2bf;
+  border-radius: 2px;
+  color: #6d5845;
+}
+.reminder-card .eyebrow { color: #8c6656; }
+.reminder-card p { color: #5b5545; }
+.reminder-card em,.reminder-icon { color: #ad715f; }
+.reminder-next { background: #f8efe0; border-color: #ddc6ac; color: #986858; }
+.page-end { border-color: #e6dcc8; color: #817760; }
+.back-link { color: #7b755f; }
+.diary-kind span,.entry-badge { background: #e7e7d7; color: #596a4e; border-radius: 2px; }
+.connection-bar { background: #f7f0e2; border-color: #e2d5bd; border-radius: 3px; }
+.diary-tabs { border-color: #e3d7c3; }
+.diary-tabs button { color: #887d67; }
+.diary-tabs button.active { color: #485b42; border-color: #b97766; }
+.entry-card {
+  background-color: #fffaf0;
+  background-image:
+    linear-gradient(90deg, transparent 0 39px, #c7867528 39px 40px, transparent 40px),
+    repeating-linear-gradient(180deg, transparent 0 31px, #927d5510 31px 32px);
+  border: 1px solid #e6dbc7;
+  border-radius: 2px;
+  box-shadow: 2px 3px 0 #e6dbc7;
+}
+.entry-card h3 { color: #443e32; }
+.entry-text { color: #5f5a4c; }
+.editor-shell {
+  background: #f7f0e2;
+  border: 1px solid #e2d5bd;
+  border-radius: 3px;
+}
+.editor-paper {
+  background-color: #fffaf0;
+  background-image:
+    linear-gradient(90deg, transparent 0 39px, #c7867530 39px 40px, transparent 40px),
+    repeating-linear-gradient(180deg, transparent 0 30px, #927d5516 30px 31px);
+  border-color: #e5d9c4;
+  border-radius: 2px;
+  padding-left: 52px;
+}
+.editor-title { color: #484132; }
+.editor-body { color: #554f42; line-height: 31px; }
+.editor-tools { border-color: #e7dcc9; }
+.editor-tools button { color: #617254; }
+.field input,.field select,.field textarea,.copy-field input {
+  background: #fffaf0;
+  border-color: #ded1ba;
+  border-radius: 3px;
+  color: #443e32;
+}
+.modal {
+  background: #fcf7eb;
+  border: 1px solid #e3d6bf;
+  border-radius: 3px;
+}
+.modal-header h2 { color: #433d30; }
+.simple-page>h1,.owner-page>h1 { color: #403a2e; }
+.vault-page-banner,.personal-reminder { border-radius: 3px; }
+.settings-card,.join-card,.vault-list-item,.vault-explanation>div,.owner-stats>div {
+  border-radius: 3px;
+  border-color: #e3d7c3;
+}
+.signin-main { background: #fcf7eb; }
+.signin-art { background: linear-gradient(145deg, #3a4d3a, #293a2e); }
+.signin-heart { border-radius: 50%; background: #eee3d2; color: #a96f60; }
+@media (max-width: 700px) {
+  .page {
+    min-height: calc(100vh - 60px);
+    background-image:
+      linear-gradient(90deg, transparent 0 17px, #c7867527 17px 18px, transparent 18px),
+      repeating-linear-gradient(180deg, transparent 0 31px, #927d5510 31px 32px);
+  }
+  .welcome-banner { min-height: 190px; }
+  .banner-copy { padding: 23px 19px; }
+  .banner-copy h2 { font-size: 23px; }
+  .diary-cover { height: 130px; }
+  .editor-paper { padding-left: 38px; }
+}

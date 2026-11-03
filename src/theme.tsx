@@ -6,13 +6,13 @@ export type ResolvedTheme='dark'|'light';
 const STORAGE_KEY='dear-us:appearance';
 
 export function parseThemePreference(value:string|null):ThemePreference {
- return value==='light'||value==='system'||value==='dark'?value:'dark';
+ return value==='light'||value==='system'||value==='dark'?value:'light';
 }
 export function resolveTheme(preference:ThemePreference,systemDark:boolean):ResolvedTheme {
  return preference==='system'?(systemDark?'dark':'light'):preference;
 }
 function storedPreference():ThemePreference {
- try{return parseThemePreference(localStorage.getItem(STORAGE_KEY));}catch{return 'dark';}
+ try{return parseThemePreference(localStorage.getItem(STORAGE_KEY));}catch{return 'light';}
 }
 function systemPrefersDark():boolean {
  return typeof window==='undefined'||typeof window.matchMedia!=='function'||window.matchMedia('(prefers-color-scheme: dark)').matches;
