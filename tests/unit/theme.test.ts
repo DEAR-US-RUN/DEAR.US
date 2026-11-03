@@ -2,10 +2,10 @@ import { describe,expect,it } from 'vitest';
 import { parseThemePreference,resolveTheme } from '../../src/theme';
 
 describe('theme preferences',()=>{
- it('defaults to dark for a missing or invalid stored choice',()=>{
-  expect(parseThemePreference(null)).toBe('dark');
-  expect(parseThemePreference('')).toBe('dark');
-  expect(parseThemePreference('sepia')).toBe('dark');
+ it('defaults to light for a missing or invalid stored choice',()=>{
+  expect(parseThemePreference(null)).toBe('light');
+  expect(parseThemePreference('')).toBe('light');
+  expect(parseThemePreference('sepia')).toBe('light');
  });
  it('accepts all three explicit choices',()=>{
   expect(['dark','light','system'].map(parseThemePreference)).toEqual(['dark','light','system']);
