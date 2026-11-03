@@ -3,5 +3,6 @@ import App from './App';
 import { initializeTheme } from './theme';
 import './styles.css';
 import './theme.css';
+import './garden.css';
 initializeTheme();
 createRoot(document.getElementById('root')!).render(<App/>);
