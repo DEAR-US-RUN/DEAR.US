@@ -14,9 +14,9 @@ export function Layout(){
   {open&&<button className="mobile-scrim" aria-label="Close menu" onClick={()=>setOpen(false)}/>}
   <aside className={`sidebar ${open?'sidebar-open':''}`}>
    <div className="sidebar-top"><Brand/><button className="mobile-close" aria-label="Close menu" onClick={()=>setOpen(false)}><X size={20}/></button></div>
-   <div className="sidebar-label">YOUR LITTLE CORNER</div>
+   <div className="sidebar-label">THE JOURNAL</div>
    <nav className="side-nav" aria-label="Main navigation">{nav.map(({to,label,icon:Icon,end})=><NavLink key={to} end={end} to={to} onClick={()=>setOpen(false)} className={({isActive})=>`nav-link ${isActive?'active':''}`}><Icon size={18} strokeWidth={1.6}/><span>{label}</span>{to==='/vault'&&<span className="nav-sparkle">✦</span>}</NavLink>)}{current.isOwner&&!preview&&<NavLink to="/owner" className={({isActive})=>`nav-link ${isActive?'active':''}`}><ShieldCheck size={18}/><span>Owner panel</span></NavLink>}</nav>
-   <div className="sidebar-note"><div className="note-icon"><Heart size={17} strokeWidth={1.4}/></div><p>A little space for<br/><em>the things that matter.</em></p><span>MADE WITH CARE, FOR YOU</span></div>
+   <div className="sidebar-note"><div className="note-icon"><Heart size={17} strokeWidth={1.4}/></div><p>Let your little moments<br/><em>take root here.</em></p><span>GROW AT YOUR OWN PACE</span></div>
    <div className="sidebar-bottom"><Avatar name={current.name} avatar={current.avatar} tone="cream"/><div className="sidebar-user"><strong>{preview?'Sample account':current.name}</strong><span>{preview?'Just looking around':'Your private space'}</span></div><button aria-label={preview?'Sign in':'Sign out'} title={preview?'Sign in':'Sign out'} onClick={()=>{if(preview){leavePreview();navigate('/sign-in');}else void signOut();}}><LogOut size={17}/></button></div>
   </aside>
   <div className="main-shell">
