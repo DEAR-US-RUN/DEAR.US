@@ -11,6 +11,6 @@ export function ToastProvider({children}:{children:ReactNode}){
   const id=crypto.randomUUID();setItems(old=>[...old.filter(i=>i.message!==message),{id,message,variant}]);
   if(variant!=='error')setTimeout(()=>remove(id),5000);
  },[]);
- return <Ctx.Provider value={{notify}}>{children}<div className="toast-stack" aria-live="polite" aria-atomic="false">{items.map(i=><div key={i.id} className={`toast toast-${i.variant}`} role={i.variant==='error'?'alert':'status'}>{i.variant==='success'?<CheckCircle2 size={18}/>:i.variant==='error'?<AlertCircle size={18}/>:<Info size={18}/>}<span>{i.message}</span><button onClick={()=>remove(i.id)} aria-label="Dismiss notification"><X size={16}/></button></div>)}</div></Ctx.Provider>;
+ return <Ctx.Provider value={{notify}}>{children}<div className="toast-stack" aria-live="polite" aria-atomic="false">{items.map(i=><div key={i.id} className={`toast toast-${i.variant}`} role={i.variant==='error'?'alert':'status'}>{i.variant==='success'?<CheckCircle2 size={18}/>:i.variant==='error'?<AlertCircle size={18}/>:<Info size={18}/>}<span>{i.message}</span><button onClick={()=>remove(i.id)} aria-label="Dismiss notification"><X size={16}/></button>{i.variant!=='error'&&<i className="toast-timer" aria-hidden="true"/>}</div>)}</div></Ctx.Provider>;
 }
 export const useToast=()=>useContext(Ctx);

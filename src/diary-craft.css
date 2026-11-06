@@ -1,0 +1,1480 @@
+/* --------------------------------------------------------------------------
+   DEAR, US — HEIRLOOM CLOTHBOUND DIARY & STATIONERY CRAFT
+   Warm linen covers, deckled cotton paper, stitched book spines, silk
+   swallowtail ribbons, wax seals, ruled/dotted/linen sheets, timeline rail,
+   and 3D open-book spread transitions across Light and Dark modes.
+   -------------------------------------------------------------------------- */
+
+:root,
+html[data-theme='light'] {
+  --garden-canvas: #f6f1e7;
+  --garden-paper: #fffdf8;
+  --garden-paper-soft: #f1e9dc;
+  --garden-ink: #322822;
+  --garden-muted: #766a5e;
+  --garden-line: #e4d8c7;
+  --garden-green: #2c4639;
+  --garden-green-soft: #436252;
+  --garden-lilac: #9f796b;
+  --garden-coral: #b76f5e;
+  --garden-gold: #b88f54;
+  --garden-shadow: 0 12px 30px rgba(72, 54, 38, 0.08);
+  --garden-shadow-hover: 0 20px 44px rgba(64, 47, 33, 0.13);
+
+  --paper-sheet: #fffdf8;
+  --paper-sheet-alt: #fbf6ec;
+  --paper-rule: rgba(169, 148, 125, 0.22);
+  --paper-dot: rgba(150, 130, 108, 0.34);
+  --paper-margin: rgba(196, 114, 103, 0.34);
+  --paper-edge-1: #f5ede0;
+  --paper-edge-2: #ebe0cf;
+  --paper-edge-3: #dfd1bd;
+  --spine-groove: rgba(48, 36, 26, 0.12);
+  --ribbon-rose: #b25d52;
+  --ribbon-sage: #3c5c4c;
+  --wax-crimson: #9e433a;
+  --wax-crimson-deep: #752b24;
+  --spot-fill: rgba(183, 143, 84, 0.12);
+  --spot-ring: rgba(178, 126, 94, 0.42);
+}
+
+html[data-theme='dark'] {
+  --garden-canvas: #181412;
+  --garden-paper: #241e1b;
+  --garden-paper-soft: #2e2622;
+  --garden-ink: #efe6da;
+  --garden-muted: #b3a393;
+  --garden-line: #3e332d;
+  --garden-green: #385143;
+  --garden-green-soft: #27392f;
+  --garden-lilac: #d39b88;
+  --garden-coral: #d99482;
+  --garden-gold: #cca468;
+  --garden-shadow: 0 16px 38px rgba(5, 3, 2, 0.44);
+  --garden-shadow-hover: 0 24px 52px rgba(4, 2, 1, 0.58);
+
+  --paper-sheet: #251f1c;
+  --paper-sheet-alt: #201b18;
+  --paper-rule: rgba(214, 189, 162, 0.1);
+  --paper-dot: rgba(214, 189, 162, 0.22);
+  --paper-margin: rgba(214, 134, 120, 0.26);
+  --paper-edge-1: #302824;
+  --paper-edge-2: #29221e;
+  --paper-edge-3: #1f1916;
+  --spine-groove: rgba(0, 0, 0, 0.42);
+  --ribbon-rose: #c46d60;
+  --ribbon-sage: #628873;
+  --wax-crimson: #b24f45;
+  --wax-crimson-deep: #7f2f27;
+  --spot-fill: rgba(212, 164, 106, 0.11);
+  --spot-ring: rgba(212, 155, 136, 0.34);
+}
+
+/* Warm woven linen desk canvas */
+body {
+  background:
+    radial-gradient(circle at 14% 6%, rgba(218, 187, 145, 0.18), transparent 34%),
+    radial-gradient(circle at 86% 12%, rgba(183, 111, 94, 0.1), transparent 30%),
+    repeating-linear-gradient(
+      0deg,
+      rgba(120, 95, 70, 0.015) 0px,
+      rgba(120, 95, 70, 0.015) 1px,
+      transparent 1px,
+      transparent 4px
+    ),
+    var(--garden-canvas);
+}
+
+html[data-theme='dark'] body {
+  background:
+    radial-gradient(circle at 18% 8%, rgba(204, 142, 82, 0.11), transparent 34%),
+    radial-gradient(circle at 85% 14%, rgba(178, 95, 79, 0.09), transparent 32%),
+    var(--garden-canvas);
+}
+
+.topbar {
+  background: rgba(246, 241, 231, 0.84);
+  border-bottom-color: var(--garden-line);
+}
+
+html[data-theme='dark'] .topbar {
+  background: rgba(24, 20, 18, 0.86);
+  border-bottom-color: var(--garden-line);
+}
+
+.reading-progress {
+  background: linear-gradient(90deg, var(--ribbon-rose), var(--garden-gold), var(--garden-green));
+}
+
+/* --------------------------------------------------------------------------
+   1. Bound Cloth Sidebar & Stitched Book Spine
+   -------------------------------------------------------------------------- */
+.sidebar {
+  position: sticky;
+  background:
+    linear-gradient(180deg, #273c31 0%, #1e3027 100%);
+  border-right: 1px solid rgba(18, 28, 22, 0.45);
+  box-shadow: inset -10px 0 22px rgba(10, 18, 14, 0.22);
+}
+
+html[data-theme='dark'] .sidebar {
+  background:
+    linear-gradient(180deg, #201a17 0%, #171311 100%);
+  border-right: 1px solid #352b26;
+  box-shadow: inset -10px 0 24px rgba(0, 0, 0, 0.35);
+}
+
+.sidebar-stitch-seam {
+  position: absolute;
+  top: 16px;
+  bottom: 16px;
+  right: 7px;
+  width: 0;
+  border-right: 1px dashed rgba(245, 234, 216, 0.2);
+  pointer-events: none;
+}
+
+/* --------------------------------------------------------------------------
+   2. Silk Ribbons, Stitched Spines, Wax Seals & Parallax Frames
+   -------------------------------------------------------------------------- */
+.parallax-frame {
+  overflow: hidden;
+}
+
+.parallax-frame img {
+  transform: translate3d(0, var(--parallax-y, 0px), 0) scale(1.06);
+  will-change: transform;
+  transition: opacity 240ms ease;
+}
+
+.journal-banner-spine {
+  position: absolute;
+  left: 0;
+  top: 0;
+  bottom: 0;
+  width: 14px;
+  z-index: 3;
+  pointer-events: none;
+  background: linear-gradient(
+    90deg,
+    rgba(38, 28, 20, 0.22) 0%,
+    rgba(38, 28, 20, 0.06) 65%,
+    rgba(255, 255, 255, 0.22) 82%,
+    transparent 100%
+  );
+  border-right: 1px dashed rgba(110, 88, 68, 0.28);
+}
+
+html[data-theme='dark'] .journal-banner-spine {
+  background: linear-gradient(
+    90deg,
+    rgba(0, 0, 0, 0.5) 0%,
+    rgba(0, 0, 0, 0.18) 70%,
+    rgba(255, 236, 214, 0.06) 85%,
+    transparent 100%
+  );
+  border-right-color: rgba(235, 214, 190, 0.16);
+}
+
+.journal-banner-ribbon,
+.card-bookmark-ribbon,
+.signin-book-ribbon {
+  position: absolute;
+  top: 0;
+  width: 20px;
+  height: 40px;
+  z-index: 4;
+  pointer-events: none;
+  background: linear-gradient(180deg, #98463c 0%, var(--ribbon-rose) 65%, #c57467 100%);
+  clip-path: polygon(0 0, 100% 0, 100% 100%, 50% 76%, 0 100%);
+  filter: drop-shadow(0 4px 6px rgba(34, 20, 16, 0.24));
+  transition: transform 280ms var(--ease-spring), height 260ms var(--ease-out-quart);
+}
+
+.journal-banner-ribbon {
+  right: 28px;
+}
+
+.journal-banner-ribbon.ribbon-sage,
+.card-bookmark-ribbon.ribbon-sage {
+  background: linear-gradient(180deg, #2b4538 0%, var(--ribbon-sage) 70%, #587d69 100%);
+}
+
+.card-bookmark-ribbon {
+  right: 20px;
+  width: 17px;
+  height: 32px;
+}
+
+.signin-book-ribbon {
+  right: 38px;
+  height: 46px;
+}
+
+/* Home Welcome Journal Banner */
+.welcome-journal-banner {
+  position: relative;
+  padding-left: 44px;
+  background:
+    radial-gradient(circle at 10% 12%, rgba(214, 179, 132, 0.2), transparent 36%),
+    linear-gradient(135deg, #fffdf8 0%, #f6efe2 56%, #efe5d4 100%) !important;
+  border: 1px solid var(--garden-line) !important;
+  box-shadow:
+    3px 4px 0 var(--paper-edge-1),
+    6px 8px 0 var(--paper-edge-2),
+    var(--garden-shadow) !important;
+}
+
+html[data-theme='dark'] .welcome-journal-banner {
+  background:
+    radial-gradient(circle at 12% 14%, rgba(208, 146, 86, 0.16), transparent 38%),
+    linear-gradient(135deg, #28211d 0%, #211b18 58%, #1c1714 100%) !important;
+  box-shadow:
+    3px 4px 0 var(--paper-edge-1),
+    6px 8px 0 var(--paper-edge-2),
+    var(--garden-shadow) !important;
+}
+
+.welcome-journal-banner:hover .journal-banner-ribbon {
+  transform: translate3d(0, 4px, 0);
+}
+
+.wax-seal-stamp {
+  background: radial-gradient(circle at 32% 28%, #be5b50 0%, var(--wax-crimson) 62%, var(--wax-crimson-deep) 100%) !important;
+  border: 2px solid rgba(255, 228, 214, 0.34) !important;
+  color: #fff6ee !important;
+  box-shadow:
+    inset 0 2px 4px rgba(255, 224, 210, 0.32),
+    inset 0 -3px 6px rgba(48, 12, 8, 0.45),
+    0 10px 22px rgba(72, 26, 20, 0.28) !important;
+}
+
+.wax-seal-stamp svg {
+  color: #ffe8dc !important;
+}
+
+/* Pinned deckle-edge reminder note */
+.reminder-card {
+  position: relative;
+  background:
+    linear-gradient(180deg, var(--paper-sheet) 0%, var(--paper-sheet-alt) 100%) !important;
+  border: 1px solid var(--garden-line) !important;
+  box-shadow: 2px 3px 0 var(--paper-edge-1), var(--garden-shadow);
+}
+
+.reminder-card::before {
+  content: '';
+  position: absolute;
+  top: -7px;
+  left: 50%;
+  width: 58px;
+  height: 15px;
+  transform: translateX(-50%) rotate(-1.8deg);
+  background: rgba(212, 186, 145, 0.48);
+  border-left: 1px dashed rgba(145, 118, 84, 0.28);
+  border-right: 1px dashed rgba(145, 118, 84, 0.28);
+  pointer-events: none;
+}
+
+html[data-theme='dark'] .reminder-card::before {
+  background: rgba(196, 152, 98, 0.26);
+  border-color: rgba(235, 205, 168, 0.2);
+}
+
+/* --------------------------------------------------------------------------
+   3. Bound Hardcover Diary Cards (Spine + Stacked Pages + 3D Tilt)
+   -------------------------------------------------------------------------- */
+.diary-card-bound {
+  position: relative;
+  overflow: visible;
+  border-radius: 6px 14px 14px 6px !important;
+  background: var(--paper-sheet) !important;
+  border: 1px solid var(--garden-line) !important;
+  box-shadow:
+    3px 3px 0 var(--paper-edge-1),
+    5px 6px 0 var(--paper-edge-2),
+    7px 9px 0 var(--paper-edge-3),
+    0 14px 30px rgba(60, 44, 30, 0.1) !important;
+  transform: perspective(980px) rotateX(var(--tilt-x, 0deg)) rotateY(var(--tilt-y, 0deg));
+  transition:
+    transform 240ms var(--ease-out-quart),
+    box-shadow 260ms var(--ease-out-quart),
+    border-color 220ms ease;
+}
+
+.diary-card-bound .diary-cover {
+  border-radius: 5px 13px 0 0;
+  overflow: hidden;
+}
+
+.diary-card-bound:hover {
+  transform:
+    perspective(980px)
+    rotateX(var(--tilt-x, 0deg))
+    rotateY(var(--tilt-y, 0deg))
+    translate3d(0, -5px, 0);
+  box-shadow:
+    4px 4px 0 var(--paper-edge-1),
+    7px 8px 0 var(--paper-edge-2),
+    10px 12px 0 var(--paper-edge-3),
+    0 22px 42px rgba(52, 36, 24, 0.16) !important;
+}
+
+.diary-card-bound:hover .card-bookmark-ribbon {
+  height: 40px;
+}
+
+.book-spine-groove {
+  position: absolute;
+  left: 0;
+  top: 0;
+  bottom: 0;
+  width: 13px;
+  z-index: 3;
+  border-radius: 5px 0 0 5px;
+  pointer-events: none;
+  background: linear-gradient(
+    90deg,
+    var(--spine-groove) 0%,
+    rgba(255, 255, 255, 0.18) 65%,
+    rgba(40, 28, 18, 0.09) 85%,
+    transparent 100%
+  );
+  border-right: 1px dashed rgba(88, 68, 52, 0.24);
+}
+
+html[data-theme='dark'] .book-spine-groove {
+  background: linear-gradient(
+    90deg,
+    rgba(0, 0, 0, 0.5) 0%,
+    rgba(255, 236, 214, 0.06) 65%,
+    rgba(0, 0, 0, 0.28) 86%,
+    transparent 100%
+  );
+  border-right-color: rgba(235, 214, 190, 0.14);
+}
+
+.diary-card-bound .diary-card-body {
+  padding-left: 26px;
+}
+
+/* --------------------------------------------------------------------------
+   4. Diary Page Illustrated Hardcover Hero Banner
+   -------------------------------------------------------------------------- */
+.diary-hero-cover {
+  position: relative;
+  display: grid;
+  grid-template-columns: minmax(0, 1.15fr) minmax(240px, 0.85fr);
+  gap: 24px;
+  align-items: center;
+  margin-bottom: 18px;
+  padding: 26px 26px 26px 38px;
+  border-radius: 8px 18px 18px 8px;
+  border: 1px solid var(--garden-line);
+  background:
+    radial-gradient(circle at 8% 15%, rgba(212, 180, 136, 0.18), transparent 40%),
+    linear-gradient(135deg, var(--paper-sheet) 0%, var(--paper-sheet-alt) 100%);
+  box-shadow:
+    3px 4px 0 var(--paper-edge-1),
+    6px 8px 0 var(--paper-edge-2),
+    var(--garden-shadow);
+  overflow: hidden;
+}
+
+.diary-hero-copy h1 {
+  font-family: var(--serif);
+  font-size: clamp(2rem, 3.6vw, 3.1rem);
+  font-weight: 500;
+  line-height: 1.04;
+  letter-spacing: -0.02em;
+  margin: 8px 0 6px;
+}
+
+.diary-hero-copy > p {
+  margin: 0 0 18px;
+  color: var(--garden-muted);
+  font-size: 0.94rem;
+}
+
+.diary-kind {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 10px;
+}
+
+.diary-folio-tag {
+  font-style: normal;
+  font-size: 0.65rem;
+  font-weight: 700;
+  letter-spacing: 0.16em;
+  color: var(--garden-muted);
+}
+
+.diary-hero-art {
+  height: 196px;
+  border-radius: 12px;
+  border: 1px solid var(--garden-line);
+  box-shadow: 0 12px 26px rgba(42, 30, 20, 0.14);
+}
+
+.diary-hero-art img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+/* --------------------------------------------------------------------------
+   5. Journal Explorer Toolbar, Timeline Stream & Ruled Entry Sheets
+   -------------------------------------------------------------------------- */
+.journal-explorer {
+  display: grid;
+  gap: 18px;
+}
+
+.journal-toolbar {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: space-between;
+  gap: 10px;
+  padding: 10px 12px;
+  border-radius: 14px;
+  border: 1px solid var(--garden-line);
+  background: var(--paper-sheet);
+  box-shadow: var(--garden-shadow);
+}
+
+.journal-search {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  flex: 1 1 200px;
+  min-width: 0;
+  padding: 6px 10px;
+  border-radius: 999px;
+  border: 1px solid var(--garden-line);
+  background: var(--garden-paper-soft);
+  color: var(--garden-muted);
+}
+
+.journal-search input {
+  width: 100%;
+  min-width: 0;
+  border: 0;
+  outline: 0;
+  background: transparent;
+  color: var(--garden-ink);
+  font-size: 0.82rem;
+}
+
+.journal-search-clear {
+  display: grid;
+  place-items: center;
+  width: 20px;
+  height: 20px;
+  border: 0;
+  border-radius: 50%;
+  background: rgba(120, 100, 82, 0.15);
+  color: var(--garden-ink);
+}
+
+.journal-filter-pills,
+.journal-mode-switch {
+  display: inline-flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 4px;
+}
+
+.journal-filter-pills button,
+.journal-mode-switch button {
+  display: inline-flex;
+  align-items: center;
+  gap: 5px;
+  padding: 6px 11px;
+  border-radius: 999px;
+  border: 1px solid transparent;
+  background: transparent;
+  color: var(--garden-muted);
+  font-size: 0.76rem;
+  font-weight: 600;
+  transition: background-color 180ms ease, color 180ms ease, border-color 180ms ease;
+}
+
+.journal-filter-pills button span {
+  font-size: 0.68rem;
+  opacity: 0.78;
+}
+
+.journal-filter-pills button:hover,
+.journal-mode-switch button:hover {
+  color: var(--garden-ink);
+  background: var(--garden-paper-soft);
+}
+
+.journal-filter-pills button.active {
+  background: var(--garden-paper-soft);
+  border-color: var(--garden-line);
+  color: var(--garden-ink);
+}
+
+.journal-mode-switch {
+  padding: 3px;
+  border-radius: 999px;
+  border: 1px solid var(--garden-line);
+  background: var(--garden-paper-soft);
+}
+
+.journal-mode-switch button.active {
+  background: var(--garden-green);
+  color: #fbf7ef;
+}
+
+html[data-theme='dark'] .journal-mode-switch button.active {
+  background: #e4d7c5;
+  color: #1d1714;
+}
+
+/* Timeline Stream */
+.entry-timeline-stream {
+  position: relative;
+  gap: 18px;
+}
+
+.timeline-entry-row {
+  position: relative;
+  display: grid;
+  grid-template-columns: 70px minmax(0, 1fr);
+  gap: 14px;
+  align-items: start;
+}
+
+.timeline-entry-row::before {
+  content: '';
+  position: absolute;
+  left: 34px;
+  top: 26px;
+  bottom: -22px;
+  width: 0;
+  border-left: 1px dashed var(--garden-line);
+}
+
+.timeline-entry-row:last-child::before {
+  display: none;
+}
+
+.timeline-marker {
+  display: grid;
+  justify-items: center;
+  gap: 6px;
+  padding-top: 14px;
+  position: relative;
+  z-index: 1;
+}
+
+.timeline-dot {
+  width: 11px;
+  height: 11px;
+  border-radius: 50%;
+  background: var(--ribbon-rose);
+  box-shadow: 0 0 0 4px var(--garden-paper-soft);
+}
+
+.timeline-date-chip {
+  font-size: 0.65rem;
+  font-weight: 700;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: var(--garden-muted);
+  text-align: center;
+}
+
+/* Ruled Cotton Entry Sheet */
+.entry-card-lined {
+  position: relative;
+  padding: 24px 26px 24px 40px !important;
+  border-radius: 6px 14px 14px 6px !important;
+  background:
+    linear-gradient(
+      90deg,
+      transparent 0,
+      transparent 27px,
+      var(--paper-margin) 27px,
+      var(--paper-margin) 28px,
+      transparent 28px
+    ),
+    repeating-linear-gradient(
+      180deg,
+      transparent 0px,
+      transparent 29px,
+      var(--paper-rule) 29px,
+      var(--paper-rule) 30px
+    ),
+    var(--paper-sheet) !important;
+  box-shadow:
+    2px 3px 0 var(--paper-edge-1),
+    4px 6px 0 var(--paper-edge-2),
+    var(--garden-shadow) !important;
+}
+
+.entry-card-lined.is-bookmarked {
+  border-color: var(--ribbon-rose) !important;
+}
+
+.entry-folio-strip {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 10px;
+  margin-bottom: 10px;
+  padding-right: 30px;
+  font-size: 0.65rem;
+  font-weight: 700;
+  letter-spacing: 0.16em;
+  color: var(--garden-muted);
+}
+
+.entry-mood-stamp {
+  color: var(--garden-lilac);
+  letter-spacing: 0.08em;
+}
+
+.page-ribbon-toggle {
+  position: absolute;
+  top: -1px;
+  right: 18px;
+  width: 26px;
+  height: 34px;
+  border: 0;
+  display: grid;
+  place-items: start center;
+  padding-top: 6px;
+  background: var(--garden-paper-soft);
+  color: var(--garden-muted);
+  clip-path: polygon(0 0, 100% 0, 100% 100%, 50% 78%, 0 100%);
+  transition: transform 220ms var(--ease-spring), background-color 180ms ease, color 180ms ease;
+}
+
+.page-ribbon-toggle:hover {
+  transform: translate3d(0, 2px, 0);
+  color: var(--garden-ink);
+}
+
+.page-ribbon-toggle.active {
+  background: var(--ribbon-rose);
+  color: #fff8f2;
+  height: 38px;
+}
+
+/* --------------------------------------------------------------------------
+   6. Interactive Open-Book Two-Page Spread & 3D Page Turn
+   -------------------------------------------------------------------------- */
+.open-book-stage {
+  display: grid;
+  gap: 16px;
+  perspective: 1600px;
+}
+
+.open-book-frame {
+  position: relative;
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  border-radius: 14px;
+  padding: 10px;
+  background: linear-gradient(180deg, #2b3f34 0%, #1e2e25 100%);
+  border: 1px solid rgba(30, 22, 16, 0.35);
+  box-shadow:
+    0 24px 54px rgba(38, 28, 20, 0.22),
+    inset 0 1px 0 rgba(255, 255, 255, 0.14);
+}
+
+html[data-theme='dark'] .open-book-frame {
+  background: linear-gradient(180deg, #181310 0%, #100d0b 100%);
+  border-color: #3d312b;
+  box-shadow: 0 28px 62px rgba(0, 0, 0, 0.62);
+}
+
+.open-book-frame.single-sheet {
+  grid-template-columns: minmax(0, 1fr);
+}
+
+/* Center stitched gutter & hanging silk bookmark */
+.open-book-frame.two-sheet::after {
+  content: '';
+  position: absolute;
+  top: 10px;
+  bottom: 10px;
+  left: 50%;
+  width: 28px;
+  transform: translateX(-50%);
+  pointer-events: none;
+  background: linear-gradient(
+    90deg,
+    transparent 0%,
+    rgba(42, 28, 18, 0.12) 38%,
+    rgba(28, 18, 10, 0.28) 50%,
+    rgba(42, 28, 18, 0.12) 62%,
+    transparent 100%
+  );
+  z-index: 3;
+}
+
+html[data-theme='dark'] .open-book-frame.two-sheet::after {
+  background: linear-gradient(
+    90deg,
+    transparent 0%,
+    rgba(0, 0, 0, 0.36) 38%,
+    rgba(0, 0, 0, 0.68) 50%,
+    rgba(0, 0, 0, 0.36) 62%,
+    transparent 100%
+  );
+}
+
+.book-center-ribbon {
+  position: absolute;
+  top: 4px;
+  left: 50%;
+  width: 14px;
+  height: 54px;
+  transform: translateX(-50%);
+  z-index: 4;
+  pointer-events: none;
+  background: linear-gradient(180deg, #913d34 0%, var(--ribbon-rose) 75%, #c77669 100%);
+  clip-path: polygon(0 0, 100% 0, 100% 100%, 50% 80%, 0 100%);
+  filter: drop-shadow(0 4px 6px rgba(0, 0, 0, 0.28));
+}
+
+.open-book-frame.single-sheet .book-center-ribbon {
+  left: auto;
+  right: 26px;
+  transform: none;
+}
+
+.book-leaf {
+  display: flex;
+  flex-direction: column;
+  min-height: 370px;
+  padding: 24px 26px 20px;
+  background:
+    repeating-linear-gradient(
+      180deg,
+      transparent 0px,
+      transparent 29px,
+      var(--paper-rule) 29px,
+      var(--paper-rule) 30px
+    ),
+    var(--paper-sheet);
+  border: 1px solid var(--garden-line);
+}
+
+.book-leaf-left {
+  border-radius: 8px 3px 3px 8px;
+  box-shadow: -3px 0 0 var(--paper-edge-1), -6px 0 0 var(--paper-edge-2);
+}
+
+.book-leaf-right {
+  border-radius: 3px 8px 8px 3px;
+  box-shadow: 3px 0 0 var(--paper-edge-1), 6px 0 0 var(--paper-edge-2);
+}
+
+.open-book-frame.single-sheet .book-leaf-left {
+  border-radius: 8px;
+  box-shadow: 3px 3px 0 var(--paper-edge-1), 6px 6px 0 var(--paper-edge-2);
+}
+
+.open-book-frame.turn-next .book-leaf-right,
+.open-book-frame.single-sheet.turn-next .book-leaf {
+  transform-origin: left center;
+  animation: page-flip-next 360ms var(--ease-out-expo) both;
+}
+
+.open-book-frame.turn-prev .book-leaf-left,
+.open-book-frame.single-sheet.turn-prev .book-leaf {
+  transform-origin: right center;
+  animation: page-flip-prev 360ms var(--ease-out-expo) both;
+}
+
+@keyframes page-flip-next {
+  from {
+    opacity: 0.45;
+    transform: rotateY(-14deg) translate3d(4px, 0, 0);
+  }
+  to {
+    opacity: 1;
+    transform: rotateY(0deg) translate3d(0, 0, 0);
+  }
+}
+
+@keyframes page-flip-prev {
+  from {
+    opacity: 0.45;
+    transform: rotateY(14deg) translate3d(-4px, 0, 0);
+  }
+  to {
+    opacity: 1;
+    transform: rotateY(0deg) translate3d(0, 0, 0);
+  }
+}
+
+html[data-vt-kind='book'] #main-content,
+html[data-vt-kind='book'] .sidebar,
+html[data-vt-kind='book'] .topbar {
+  view-transition-name: none;
+}
+
+html[data-vt-kind='book'] .open-book-frame {
+  view-transition-name: open-book-spread;
+}
+
+.book-leaf-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 8px;
+  padding-bottom: 10px;
+  border-bottom: 1px solid var(--garden-line);
+  font-size: 0.66rem;
+  font-weight: 700;
+  letter-spacing: 0.15em;
+  color: var(--garden-muted);
+}
+
+.book-leaf-actions {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+}
+
+.book-pin-btn {
+  display: grid;
+  place-items: center;
+  width: 26px;
+  height: 26px;
+  border-radius: 50%;
+  border: 1px solid var(--garden-line);
+  background: var(--garden-paper-soft);
+  color: var(--garden-muted);
+}
+
+.book-pin-btn.active {
+  background: var(--ribbon-rose);
+  border-color: var(--ribbon-rose);
+  color: #fff8f2;
+}
+
+.book-leaf-meta {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 10px;
+  margin: 14px 0 12px;
+}
+
+.book-leaf-meta strong {
+  display: block;
+  font-size: 0.84rem;
+}
+
+.book-leaf-meta span {
+  font-size: 0.74rem;
+  color: var(--garden-muted);
+}
+
+.book-mood-chip {
+  margin-left: auto;
+  font-style: normal;
+  font-size: 0.72rem;
+  color: var(--garden-lilac);
+}
+
+.book-leaf-body {
+  flex: 1;
+}
+
+.book-leaf-body h3 {
+  font-family: var(--serif);
+  font-size: 1.55rem;
+  font-weight: 500;
+  margin: 0 0 10px;
+  line-height: 1.15;
+}
+
+.book-leaf-footer {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-top: 18px;
+  padding-top: 10px;
+  border-top: 1px dashed var(--garden-line);
+  font-family: var(--serif);
+  font-style: italic;
+  font-size: 0.86rem;
+  color: var(--garden-muted);
+}
+
+.book-leaf-blank {
+  display: grid;
+  place-items: center;
+  text-align: center;
+}
+
+.blank-leaf-watermark {
+  color: var(--garden-muted);
+  opacity: 0.72;
+}
+
+.blank-leaf-watermark span {
+  display: block;
+  font-size: 1.25rem;
+  margin-bottom: 6px;
+  color: var(--garden-gold);
+}
+
+.blank-leaf-watermark p {
+  margin: 0;
+  font-family: var(--serif);
+  font-size: 1.15rem;
+  line-height: 1.35;
+}
+
+.book-controls {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+}
+
+.book-spread-dots {
+  display: inline-flex;
+  align-items: center;
+  gap: 7px;
+}
+
+.spread-dot {
+  width: 9px;
+  height: 9px;
+  padding: 0;
+  border-radius: 999px;
+  border: 0;
+  background: var(--garden-line);
+  transition: width 220ms var(--ease-spring), background-color 180ms ease;
+}
+
+.spread-dot.active {
+  width: 24px;
+  background: var(--ribbon-rose);
+}
+
+.sample-explorer-footer {
+  display: grid;
+  gap: 8px;
+  padding-top: 4px;
+}
+
+/* --------------------------------------------------------------------------
+   7. Stationery Writing Studio (Paper Textures, Inks, Prompt Slip & Focus)
+   -------------------------------------------------------------------------- */
+.stationery-bar {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+  margin-bottom: 12px;
+  padding: 9px 14px;
+  border-radius: 12px;
+  border: 1px solid var(--garden-line);
+  background: var(--paper-sheet);
+}
+
+.stationery-group,
+.stationery-actions {
+  display: inline-flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 6px;
+}
+
+.stationery-label {
+  font-size: 0.68rem;
+  font-weight: 700;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  color: var(--garden-muted);
+  margin-right: 4px;
+}
+
+.stationery-group button:not(.ink-swatch),
+.stationery-action-btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 5px;
+  padding: 5px 10px;
+  border-radius: 999px;
+  border: 1px solid var(--garden-line);
+  background: var(--garden-paper-soft);
+  color: var(--garden-muted);
+  font-size: 0.75rem;
+  font-weight: 600;
+  transition: background-color 180ms ease, color 180ms ease, border-color 180ms ease;
+}
+
+.stationery-group button:not(.ink-swatch).active,
+.stationery-action-btn.active {
+  background: var(--garden-green);
+  border-color: var(--garden-green);
+  color: #fbf7ef;
+}
+
+html[data-theme='dark'] .stationery-group button:not(.ink-swatch).active,
+html[data-theme='dark'] .stationery-action-btn.active {
+  background: #e5d8c7;
+  border-color: #e5d8c7;
+  color: #1d1714;
+}
+
+.ink-swatch {
+  width: 22px;
+  height: 22px;
+  border-radius: 50%;
+  border: 2px solid var(--paper-sheet);
+  box-shadow: 0 0 0 1px var(--garden-line);
+  transition: transform 180ms var(--ease-spring), box-shadow 180ms ease;
+}
+
+.ink-swatch:hover {
+  transform: scale(1.12);
+}
+
+.ink-swatch.active {
+  transform: scale(1.14);
+  box-shadow: 0 0 0 2px var(--garden-ink);
+}
+
+.ink-swatch-walnut { background: #3b2a22; }
+.ink-swatch-botanical { background: #264838; }
+.ink-swatch-midnight { background: #263854; }
+.ink-swatch-bordeaux { background: #6b2934; }
+
+.prompt-slip {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+  margin-bottom: 12px;
+  padding: 12px 16px;
+  border-radius: 10px;
+  border: 1px dashed var(--garden-gold);
+  background: var(--paper-sheet-alt);
+  animation: insight-open 220ms var(--ease-out-expo) both;
+}
+
+.prompt-slip p {
+  margin: 4px 0 0;
+  font-family: var(--serif);
+  font-style: italic;
+  font-size: 1.15rem;
+  color: var(--garden-ink);
+}
+
+.prompt-slip-actions {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.prompt-slip-close {
+  display: grid;
+  place-items: center;
+  width: 28px;
+  height: 28px;
+  border-radius: 50%;
+  border: 1px solid var(--garden-line);
+  background: transparent;
+  color: var(--garden-muted);
+}
+
+/* Paper Textures & Binder Holes */
+.editor-paper {
+  position: relative;
+  padding-left: 44px !important;
+  border-radius: 6px 16px 16px 6px !important;
+  box-shadow:
+    3px 4px 0 var(--paper-edge-1),
+    6px 8px 0 var(--paper-edge-2),
+    var(--garden-shadow) !important;
+}
+
+.paper-binder-holes {
+  position: absolute;
+  left: 13px;
+  top: 34px;
+  bottom: 34px;
+  width: 10px;
+  pointer-events: none;
+  background:
+    radial-gradient(circle at 5px 14%, var(--garden-canvas) 4px, rgba(120, 95, 72, 0.22) 5px, transparent 5.5px),
+    radial-gradient(circle at 5px 50%, var(--garden-canvas) 4px, rgba(120, 95, 72, 0.22) 5px, transparent 5.5px),
+    radial-gradient(circle at 5px 86%, var(--garden-canvas) 4px, rgba(120, 95, 72, 0.22) 5px, transparent 5.5px);
+}
+
+.editor-paper.paper-ruled {
+  background:
+    linear-gradient(
+      90deg,
+      transparent 0,
+      transparent 31px,
+      var(--paper-margin) 31px,
+      var(--paper-margin) 32px,
+      transparent 32px
+    ),
+    repeating-linear-gradient(
+      180deg,
+      transparent 0px,
+      transparent 31px,
+      var(--paper-rule) 31px,
+      var(--paper-rule) 32px
+    ),
+    var(--paper-sheet) !important;
+}
+
+.editor-paper.paper-dotted {
+  background-color: var(--paper-sheet) !important;
+  background-image: radial-gradient(var(--paper-dot) 1.15px, transparent 1.15px) !important;
+  background-size: 22px 22px !important;
+}
+
+.editor-paper.paper-linen {
+  background:
+    repeating-linear-gradient(
+      0deg,
+      rgba(140, 114, 86, 0.025) 0px,
+      rgba(140, 114, 86, 0.025) 1px,
+      transparent 1px,
+      transparent 5px
+    ),
+    repeating-linear-gradient(
+      90deg,
+      rgba(140, 114, 86, 0.02) 0px,
+      rgba(140, 114, 86, 0.02) 1px,
+      transparent 1px,
+      transparent 6px
+    ),
+    var(--paper-sheet) !important;
+}
+
+/* Fountain Ink Colors (Light & Dark balanced) */
+.editor-paper.ink-walnut .editor-title,
+.editor-paper.ink-walnut .editor-body {
+  color: #32251e;
+}
+.editor-paper.ink-botanical .editor-title,
+.editor-paper.ink-botanical .editor-body {
+  color: #1f4232;
+}
+.editor-paper.ink-midnight .editor-title,
+.editor-paper.ink-midnight .editor-body {
+  color: #1f324d;
+}
+.editor-paper.ink-bordeaux .editor-title,
+.editor-paper.ink-bordeaux .editor-body {
+  color: #5b222c;
+}
+
+html[data-theme='dark'] .editor-paper.ink-walnut .editor-title,
+html[data-theme='dark'] .editor-paper.ink-walnut .editor-body {
+  color: #f1e6d8;
+}
+html[data-theme='dark'] .editor-paper.ink-botanical .editor-title,
+html[data-theme='dark'] .editor-paper.ink-botanical .editor-body {
+  color: #c5e3d0;
+}
+html[data-theme='dark'] .editor-paper.ink-midnight .editor-title,
+html[data-theme='dark'] .editor-paper.ink-midnight .editor-body {
+  color: #c9daf2;
+}
+html[data-theme='dark'] .editor-paper.ink-bordeaux .editor-title,
+html[data-theme='dark'] .editor-paper.ink-bordeaux .editor-body {
+  color: #f2c6ce;
+}
+
+.editor-focus-desk .editor-paper {
+  padding-top: 34px !important;
+  padding-bottom: 30px !important;
+}
+
+.editor-focus-desk .editor-body {
+  min-height: 360px;
+}
+
+.sample-studio-callout {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: space-between;
+  gap: 14px;
+  margin-bottom: 14px;
+  padding: 16px 18px;
+  border-radius: 14px;
+  border: 1px solid var(--garden-line);
+  background: var(--paper-sheet-alt);
+}
+
+.sample-studio-callout h3 {
+  font-family: var(--serif);
+  font-size: 1.55rem;
+  font-weight: 500;
+  margin: 4px 0 4px;
+}
+
+.sample-studio-callout p {
+  margin: 0;
+  font-size: 0.84rem;
+  color: var(--garden-muted);
+}
+
+/* --------------------------------------------------------------------------
+   8. Illustrated Feelings Vault, Join Banner & Floating Scroll-To-Top
+   -------------------------------------------------------------------------- */
+.vault-hero-card,
+.vault-illustrated-banner {
+  position: relative;
+  display: grid;
+  grid-template-columns: minmax(0, 1.1fr) minmax(220px, 0.9fr);
+  gap: 20px;
+  align-items: center;
+  padding: 24px 24px 24px 36px;
+  border-radius: 8px 18px 18px 8px;
+  border: 1px solid var(--garden-line);
+  background:
+    radial-gradient(circle at 14% 18%, rgba(190, 112, 98, 0.12), transparent 42%),
+    var(--paper-sheet);
+  box-shadow:
+    3px 4px 0 var(--paper-edge-1),
+    6px 8px 0 var(--paper-edge-2),
+    var(--garden-shadow);
+  overflow: hidden;
+}
+
+.vault-hero-card .vault-intro {
+  text-align: left;
+  margin: 0;
+}
+
+.vault-banner-copy {
+  display: flex;
+  align-items: flex-start;
+  gap: 14px;
+}
+
+.vault-wax-emblem {
+  display: inline-grid;
+  place-items: center;
+  width: 46px;
+  height: 46px;
+  flex-shrink: 0;
+  margin-bottom: 10px;
+  border-radius: 50%;
+  background: radial-gradient(circle at 32% 28%, #c45e53 0%, var(--wax-crimson) 64%, var(--wax-crimson-deep) 100%);
+  border: 2px solid rgba(255, 228, 214, 0.34);
+  color: #fff4ec;
+  box-shadow:
+    inset 0 2px 4px rgba(255, 224, 210, 0.3),
+    inset 0 -3px 6px rgba(48, 12, 8, 0.45),
+    0 8px 18px rgba(72, 26, 20, 0.24);
+}
+
+.vault-hero-art,
+.vault-banner-art {
+  height: 176px;
+  border-radius: 12px;
+  border: 1px solid var(--garden-line);
+  box-shadow: 0 10px 24px rgba(40, 28, 20, 0.14);
+}
+
+.vault-hero-art img,
+.vault-banner-art img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+.approval-people > div.is-approved {
+  border-color: rgba(114, 158, 124, 0.55);
+}
+
+.join-art-strip {
+  height: 168px;
+  margin: -10px -10px 18px;
+  border-radius: 12px;
+  overflow: hidden;
+  border: 1px solid var(--garden-line);
+}
+
+.join-art-strip img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+/* Sign-in left panel warm bookcloth finish */
+.signin-art {
+  position: relative;
+  background: linear-gradient(165deg, #273b30 0%, #1d2d24 100%) !important;
+}
+
+html[data-theme='dark'] .signin-art {
+  background: linear-gradient(165deg, #221b17 0%, #161210 100%) !important;
+}
+
+/* Floating "Top of journal" pill */
+.scroll-top-pill {
+  position: fixed;
+  right: 22px;
+  bottom: 22px;
+  z-index: 25;
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  padding: 9px 14px;
+  border-radius: 999px;
+  border: 1px solid var(--garden-line);
+  background: var(--paper-sheet);
+  color: var(--garden-ink);
+  font-size: 0.76rem;
+  font-weight: 700;
+  box-shadow: 0 12px 28px rgba(34, 24, 16, 0.2);
+  opacity: 0;
+  pointer-events: none;
+  transform: translate3d(0, 12px, 0) scale(0.96);
+  transition:
+    opacity 220ms var(--ease-out-quart),
+    transform 240ms var(--ease-spring),
+    background-color 180ms ease;
+}
+
+.scroll-top-pill.is-visible {
+  opacity: 1;
+  pointer-events: auto;
+  transform: translate3d(0, 0, 0) scale(1);
+}
+
+.scroll-top-pill:hover {
+  transform: translate3d(0, -2px, 0) scale(1.02);
+}
+
+/* --------------------------------------------------------------------------
+   9. Responsive & Zero-Horizontal-Overflow Guarantees (320px / 390px+)
+   -------------------------------------------------------------------------- */
+@media (max-width: 820px) {
+  .diary-hero-cover,
+  .vault-hero-card,
+  .vault-illustrated-banner {
+    grid-template-columns: minmax(0, 1fr);
+    padding: 22px 18px 20px 26px;
+  }
+
+  .diary-hero-art,
+  .vault-hero-art,
+  .vault-banner-art {
+    height: 164px;
+  }
+}
+
+@media (max-width: 700px) {
+  .welcome-journal-banner {
+    padding-left: 26px !important;
+  }
+
+  .diary-card-bound {
+    box-shadow:
+      2px 3px 0 var(--paper-edge-1),
+      4px 5px 0 var(--paper-edge-2),
+      var(--garden-shadow) !important;
+  }
+
+  .timeline-entry-row {
+    grid-template-columns: minmax(0, 1fr);
+    gap: 6px;
+  }
+
+  .timeline-entry-row::before {
+    display: none;
+  }
+
+  .timeline-marker {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    padding-top: 0;
+  }
+
+  .entry-card-lined {
+    padding: 20px 16px 20px 28px !important;
+    background:
+      linear-gradient(
+        90deg,
+        transparent 0,
+        transparent 18px,
+        var(--paper-margin) 18px,
+        var(--paper-margin) 19px,
+        transparent 19px
+      ),
+      repeating-linear-gradient(
+        180deg,
+        transparent 0px,
+        transparent 29px,
+        var(--paper-rule) 29px,
+        var(--paper-rule) 30px
+      ),
+      var(--paper-sheet) !important;
+  }
+
+  .editor-paper {
+    padding-left: 28px !important;
+  }
+
+  .paper-binder-holes {
+    left: 7px;
+  }
+
+  .book-leaf {
+    padding: 18px 16px;
+    min-height: 300px;
+  }
+
+  .book-controls {
+    justify-content: center;
+  }
+
+  .scroll-top-pill span {
+    display: none;
+  }
+
+  .scroll-top-pill {
+    padding: 10px;
+    right: 14px;
+    bottom: 14px;
+  }
+}
+
+/* Strict Reduced Motion Compliance */
+@media (prefers-reduced-motion: reduce) {
+  .parallax-frame img {
+    transform: none !important;
+  }
+
+  .diary-card-bound,
+  .diary-card-bound:hover,
+  .open-book-frame.turn-next .book-leaf-right,
+  .open-book-frame.turn-prev .book-leaf-left,
+  .open-book-frame.single-sheet .book-leaf,
+  .scroll-top-pill,
+  .prompt-slip {
+    animation: none !important;
+    transition: none !important;
+  }
+}

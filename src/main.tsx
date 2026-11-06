@@ -4,5 +4,7 @@ import { initializeTheme } from './theme';
 import './styles.css';
 import './theme.css';
 import './garden.css';
+import './motion.css';
+import './diary-craft.css';
 initializeTheme();
 createRoot(document.getElementById('root')!).render(<App/>);

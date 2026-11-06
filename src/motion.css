@@ -1,0 +1,1018 @@
+/* --------------------------------------------------------------------------
+   DEAR, US — MODERN LIGHTWEIGHT MOTION & TRANSITIONS
+   GPU-composited transitions, native View Transitions API choreography,
+   tactile spring micro-interactions, and strict reduced-motion support.
+   -------------------------------------------------------------------------- */
+
+:root {
+  --ease-out-expo: cubic-bezier(0.16, 1, 0.3, 1);
+  --ease-out-quart: cubic-bezier(0.22, 1, 0.36, 1);
+  --ease-spring: cubic-bezier(0.34, 1.38, 0.64, 1);
+  --ease-smooth: cubic-bezier(0.4, 0, 0.2, 1);
+  --spot-fill: rgba(166, 154, 203, 0.13);
+  --spot-ring: rgba(166, 154, 203, 0.34);
+  --glass-highlight: inset 0 1px 0 rgba(255, 255, 255, 0.72);
+}
+
+html[data-theme='dark'] {
+  --spot-fill: rgba(194, 181, 223, 0.11);
+  --spot-ring: rgba(194, 181, 223, 0.28);
+  --glass-highlight: inset 0 1px 0 rgba(255, 255, 255, 0.07);
+}
+
+/* Prevent decorative transforms from ever causing horizontal viewport scroll */
+.main-shell,
+.signin-page {
+  overflow-x: clip;
+}
+
+/* Sticky frosted topbar + GPU reading progress hairline */
+.topbar {
+  position: sticky;
+  top: 0;
+  z-index: 15;
+  transition: background-color 220ms var(--ease-smooth), border-color 220ms var(--ease-smooth);
+}
+
+.reading-progress {
+  position: absolute;
+  left: 0;
+  right: 0;
+  bottom: -1px;
+  height: 2px;
+  pointer-events: none;
+  transform-origin: 0 50%;
+  transform: scaleX(var(--reading-progress, 0));
+  opacity: 0;
+  background: linear-gradient(90deg, var(--garden-lilac), var(--garden-coral), var(--garden-green));
+  transition: opacity 200ms ease;
+  will-change: transform;
+}
+
+.reading-progress[data-visible='true'] {
+  opacity: 0.9;
+}
+
+/* --------------------------------------------------------------------------
+   1. Native View Transitions API Choreography
+   -------------------------------------------------------------------------- */
+::view-transition-group(*),
+::view-transition-old(*),
+::view-transition-new(*) {
+  pointer-events: none;
+}
+
+@media (min-width: 701px) {
+  .sidebar {
+    view-transition-name: app-sidebar;
+  }
+}
+
+.topbar {
+  view-transition-name: app-topbar;
+}
+
+#main-content {
+  view-transition-name: main-stage;
+}
+
+::view-transition-old(main-stage) {
+  animation: vt-stage-out 150ms var(--ease-smooth) both;
+}
+
+::view-transition-new(main-stage) {
+  animation: vt-stage-in 280ms var(--ease-out-expo) both;
+}
+
+/* Tab transitions morph only the active tab pill and cross-glide the tab panel */
+html[data-vt-kind='tab'] #main-content,
+html[data-vt-kind='tab'] .sidebar,
+html[data-vt-kind='tab'] .topbar {
+  view-transition-name: none;
+}
+
+html[data-vt-kind='tab'] .diary-content {
+  view-transition-name: diary-tab-stage;
+}
+
+html[data-vt-kind='tab'] .diary-tab-pill {
+  view-transition-name: active-diary-tab;
+}
+
+::view-transition-group(active-diary-tab) {
+  animation-duration: 250ms;
+  animation-timing-function: var(--ease-spring);
+}
+
+::view-transition-old(diary-tab-stage) {
+  animation: vt-tab-out 130ms var(--ease-smooth) both;
+}
+
+::view-transition-new(diary-tab-stage) {
+  animation: vt-tab-in 240ms var(--ease-out-expo) both;
+}
+
+/* Theme transitions blend the entire viewport atmosphere as one unified layer */
+html[data-vt-kind='theme'] #main-content,
+html[data-vt-kind='theme'] .sidebar,
+html[data-vt-kind='theme'] .topbar,
+html[data-vt-kind='theme'] .diary-tab-pill {
+  view-transition-name: none;
+}
+
+html[data-vt-kind='theme']::view-transition-old(root),
+html[data-vt-kind='theme']::view-transition-new(root) {
+  animation-duration: 280ms;
+  animation-timing-function: var(--ease-smooth);
+}
+
+@keyframes vt-stage-out {
+  from {
+    opacity: 1;
+    transform: translate3d(0, 0, 0) scale(1);
+  }
+  to {
+    opacity: 0;
+    transform: translate3d(0, -6px, 0) scale(0.996);
+  }
+}
+
+@keyframes vt-stage-in {
+  from {
+    opacity: 0;
+    transform: translate3d(0, 10px, 0) scale(0.996);
+  }
+  to {
+    opacity: 1;
+    transform: translate3d(0, 0, 0) scale(1);
+  }
+}
+
+@keyframes vt-tab-out {
+  from {
+    opacity: 1;
+    transform: translate3d(0, 0, 0);
+  }
+  to {
+    opacity: 0;
+    transform: translate3d(0, -5px, 0);
+  }
+}
+
+@keyframes vt-tab-in {
+  from {
+    opacity: 0;
+    transform: translate3d(0, 8px, 0);
+  }
+  to {
+    opacity: 1;
+    transform: translate3d(0, 0, 0);
+  }
+}
+
+/* --------------------------------------------------------------------------
+   2. Route Stage, Tab Stage & Staggered Entrance Cascade
+   -------------------------------------------------------------------------- */
+.route-stage {
+  animation: stage-enter 320ms var(--ease-out-expo) both;
+}
+
+.tab-stage {
+  animation: tab-enter 250ms var(--ease-out-expo) both;
+}
+
+.stagger-in {
+  animation: stagger-rise 380ms var(--ease-out-expo) both;
+  animation-delay: calc(var(--i, 0) * 44ms);
+}
+
+/* Shared IntersectionObserver scroll reveal for feed cards */
+[data-revealed='pending'] {
+  opacity: 0.01;
+  transform: translate3d(0, 12px, 0);
+}
+
+[data-revealed='true'] {
+  opacity: 1;
+  transform: translate3d(0, 0, 0);
+  transition:
+    opacity 360ms var(--ease-out-expo),
+    transform 360ms var(--ease-out-expo),
+    box-shadow 240ms var(--ease-out-quart),
+    border-color 240ms var(--ease-out-quart);
+}
+
+@keyframes stage-enter {
+  from {
+    opacity: 0;
+    transform: translate3d(0, 8px, 0);
+  }
+  to {
+    opacity: 1;
+    transform: translate3d(0, 0, 0);
+  }
+}
+
+@keyframes tab-enter {
+  from {
+    opacity: 0;
+    transform: translate3d(0, 7px, 0);
+  }
+  to {
+    opacity: 1;
+    transform: translate3d(0, 0, 0);
+  }
+}
+
+@keyframes stagger-rise {
+  from {
+    opacity: 0;
+    transform: translate3d(0, 11px, 0);
+  }
+  to {
+    opacity: 1;
+    transform: translate3d(0, 0, 0);
+  }
+}
+
+/* --------------------------------------------------------------------------
+   3. Sliding Segmented Theme Picker & Tactile Controls
+   -------------------------------------------------------------------------- */
+.theme-picker-compact {
+  position: relative;
+  display: inline-grid;
+  grid-template-columns: repeat(3, 29px);
+  gap: 2px;
+  padding: 3px;
+  isolation: isolate;
+}
+
+.theme-pill-thumb {
+  position: absolute;
+  top: 3px;
+  bottom: 3px;
+  left: 3px;
+  width: 29px;
+  border-radius: 999px;
+  background: #fffefa;
+  box-shadow: 0 2px 7px rgba(45, 62, 49, 0.14), inset 0 1px 0 rgba(255, 255, 255, 0.9);
+  z-index: 0;
+  pointer-events: none;
+  transform: translate3d(calc(var(--active-idx, 0) * 31px), 0, 0);
+  transition:
+    transform 280ms var(--ease-spring),
+    background-color 200ms ease,
+    box-shadow 200ms ease;
+}
+
+html[data-theme='dark'] .theme-pill-thumb {
+  background: #485c4c;
+  box-shadow: 0 2px 8px rgba(6, 16, 12, 0.45), inset 0 1px 0 rgba(255, 255, 255, 0.12);
+}
+
+.theme-picker-compact .theme-option {
+  position: relative;
+  z-index: 1;
+  width: 29px;
+  height: 27px;
+  background: transparent !important;
+  box-shadow: none !important;
+  transition: color 180ms ease, transform 200ms var(--ease-spring);
+}
+
+.theme-picker-compact .theme-option:hover {
+  transform: scale(1.08);
+}
+
+.theme-picker-compact .theme-option:active {
+  transform: scale(0.93);
+}
+
+.theme-picker-compact .theme-option[aria-pressed='true'] svg {
+  transform: scale(1.06);
+}
+
+.theme-picker-cards .theme-option {
+  position: relative;
+  overflow: hidden;
+  box-shadow: var(--glass-highlight);
+  transition:
+    transform 220ms var(--ease-out-quart),
+    border-color 200ms ease,
+    background-color 200ms ease,
+    box-shadow 220ms ease;
+}
+
+.theme-picker-cards .theme-option:hover {
+  transform: translate3d(0, -2px, 0);
+  box-shadow: 0 8px 20px rgba(42, 65, 54, 0.08), var(--glass-highlight);
+}
+
+.theme-picker-cards .theme-option:active {
+  transform: translate3d(0, 0, 0) scale(0.985);
+}
+
+@media (max-width: 700px) {
+  .theme-picker-compact {
+    grid-template-columns: repeat(3, 30px);
+    gap: 0;
+  }
+  .theme-picker-compact .theme-option {
+    width: 30px;
+    height: 30px;
+  }
+  .theme-pill-thumb {
+    width: 30px;
+    transform: translate3d(calc(var(--active-idx, 0) * 30px), 0, 0);
+  }
+}
+
+/* --------------------------------------------------------------------------
+   4. Sidebar, Navigation Rail & Mobile Drawer Polish
+   -------------------------------------------------------------------------- */
+.brand-mark {
+  transition: transform 260ms var(--ease-spring), border-color 200ms ease, background-color 200ms ease;
+}
+
+.brand:hover .brand-mark {
+  transform: rotate(-6deg) scale(1.05);
+  background: rgba(255, 255, 255, 0.14);
+}
+
+.nav-link {
+  position: relative;
+  transition:
+    background-color 200ms var(--ease-smooth),
+    color 200ms var(--ease-smooth),
+    transform 200ms var(--ease-out-quart),
+    box-shadow 220ms var(--ease-out-quart);
+}
+
+.nav-link svg {
+  transition: transform 220ms var(--ease-spring), color 200ms ease;
+}
+
+.nav-link:hover svg {
+  transform: scale(1.1);
+}
+
+.nav-link:active {
+  transform: scale(0.985);
+}
+
+.nav-sparkle {
+  display: inline-block;
+  animation: star-breathe 4.4s ease-in-out infinite;
+}
+
+.sidebar-note {
+  transition: transform 280ms var(--ease-out-quart), border-color 220ms ease;
+}
+
+.sidebar-note:hover {
+  transform: translate3d(0, -2px, 0) rotate(-0.3deg);
+  border-color: rgba(229, 237, 222, 0.32);
+}
+
+.profile-link {
+  padding: 4px 8px 4px 4px;
+  border-radius: 999px;
+  transition: background-color 180ms ease, transform 180ms var(--ease-out-quart);
+}
+
+.profile-link:hover {
+  background: rgba(166, 154, 203, 0.12);
+}
+
+.profile-link:active {
+  transform: scale(0.97);
+}
+
+@media (max-width: 700px) {
+  .sidebar {
+    transition: transform 300ms var(--ease-out-expo);
+  }
+  .mobile-scrim {
+    backdrop-filter: blur(4px);
+    animation: overlay-fade-in 200ms ease-out both;
+  }
+}
+
+/* --------------------------------------------------------------------------
+   5. Modern Buttons, Specular Sheen & Directional Icon Micro-Motion
+   -------------------------------------------------------------------------- */
+.button {
+  position: relative;
+  overflow: hidden;
+  isolation: isolate;
+  transition:
+    background-color 180ms var(--ease-smooth),
+    border-color 180ms var(--ease-smooth),
+    color 180ms var(--ease-smooth),
+    transform 200ms var(--ease-out-quart),
+    box-shadow 220ms var(--ease-out-quart);
+}
+
+.button:not(:disabled):hover {
+  transform: translate3d(0, -1.5px, 0);
+}
+
+.button:not(:disabled):active {
+  transform: translate3d(0, 0, 0) scale(0.975);
+  transition-duration: 90ms;
+}
+
+.button-primary::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  z-index: -1;
+  pointer-events: none;
+  background: linear-gradient(
+    110deg,
+    transparent 20%,
+    rgba(255, 255, 255, 0.18) 50%,
+    transparent 80%
+  );
+  transform: translate3d(-125%, 0, 0);
+  transition: transform 520ms var(--ease-out-expo);
+}
+
+.button-primary:not(:disabled):hover::after {
+  transform: translate3d(125%, 0, 0);
+}
+
+.button > span,
+.banner-link svg,
+.preview-link svg,
+.text-action svg {
+  transition: transform 200ms var(--ease-out-quart);
+}
+
+.button:not(:disabled):hover > span,
+.banner-link:hover svg,
+.preview-link:hover svg {
+  transform: translate3d(3px, 0, 0);
+}
+
+.back-link {
+  transition: color 180ms ease, transform 200ms var(--ease-out-quart);
+}
+
+.back-link svg {
+  transition: transform 200ms var(--ease-out-quart);
+}
+
+.back-link:hover svg {
+  transform: translate3d(-3px, 0, 0);
+}
+
+.google-button {
+  transition:
+    background-color 180ms ease,
+    border-color 180ms ease,
+    transform 200ms var(--ease-out-quart),
+    box-shadow 220ms var(--ease-out-quart);
+}
+
+.google-button:not(:disabled):hover {
+  transform: translate3d(0, -1.5px, 0);
+  box-shadow: 0 10px 24px rgba(40, 66, 52, 0.09);
+}
+
+.google-button:not(:disabled):active {
+  transform: translate3d(0, 0, 0) scale(0.985);
+}
+
+/* --------------------------------------------------------------------------
+   6. Pointer-Tracked Spotlight Cards & Hero Ambient Motion
+   -------------------------------------------------------------------------- */
+.spotlight-card {
+  position: relative;
+  isolation: isolate;
+  box-shadow: var(--garden-shadow), var(--glass-highlight);
+}
+
+.spotlight-card::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  border-radius: inherit;
+  pointer-events: none;
+  z-index: 2;
+  opacity: var(--spot-opacity, 0);
+  background: radial-gradient(
+    360px circle at var(--spot-x, 50%) var(--spot-y, 50%),
+    var(--spot-fill),
+    transparent 68%
+  );
+  transition: opacity 280ms ease;
+}
+
+.diary-card {
+  will-change: transform;
+  transition:
+    transform 260ms var(--ease-out-quart),
+    box-shadow 260ms var(--ease-out-quart),
+    border-color 220ms ease;
+}
+
+.diary-card:hover {
+  transform: translate3d(0, -5px, 0);
+  border-color: var(--spot-ring);
+}
+
+.diary-card:active {
+  transform: translate3d(0, -1px, 0) scale(0.992);
+}
+
+.diary-card .cover-badge {
+  backdrop-filter: blur(10px);
+  -webkit-backdrop-filter: blur(10px);
+}
+
+.diary-card .cover-arrow {
+  transition: transform 240ms var(--ease-spring), background-color 200ms ease, box-shadow 200ms ease;
+}
+
+.diary-card:hover .cover-arrow {
+  transform: scale(1.08);
+  box-shadow: 0 6px 16px rgba(28, 46, 38, 0.18);
+}
+
+.diary-card .card-heart svg {
+  transition: transform 240ms var(--ease-spring), color 200ms ease;
+}
+
+.diary-card:hover .card-heart svg {
+  transform: scale(1.16);
+}
+
+/* Hero banner ambient botanical life */
+.welcome-banner {
+  box-shadow: 0 16px 38px rgba(83, 92, 74, 0.085), var(--glass-highlight);
+}
+
+.welcome-banner .banner-photo img {
+  transition: transform 700ms var(--ease-out-expo);
+}
+
+.welcome-banner:hover .banner-photo img {
+  transform: scale(1.035);
+}
+
+.banner-stamp {
+  backdrop-filter: blur(8px);
+  -webkit-backdrop-filter: blur(8px);
+  animation: seal-float 6.5s ease-in-out infinite;
+}
+
+.star-one {
+  animation: star-breathe 5.2s ease-in-out infinite;
+}
+
+.star-two {
+  animation: star-breathe 4.1s ease-in-out 1.2s infinite;
+}
+
+.hello-sparkle {
+  display: inline-block;
+  animation: star-breathe 5s ease-in-out infinite;
+}
+
+@keyframes seal-float {
+  0%, 100% {
+    transform: rotate(-9deg) translate3d(0, 0, 0);
+  }
+  50% {
+    transform: rotate(-6deg) translate3d(0, -5px, 0);
+  }
+}
+
+@keyframes star-breathe {
+  0%, 100% {
+    opacity: 0.72;
+    transform: scale(1) rotate(0deg);
+  }
+  50% {
+    opacity: 1;
+    transform: scale(1.12) rotate(12deg);
+  }
+}
+
+/* Connection card & privacy note reveal */
+.heart-bridge svg {
+  animation: heart-pulse 3.4s ease-in-out infinite;
+}
+
+@keyframes heart-pulse {
+  0%, 100% {
+    transform: scale(1);
+  }
+  16% {
+    transform: scale(1.18);
+  }
+  32% {
+    transform: scale(1);
+  }
+  48% {
+    transform: scale(1.11);
+  }
+  64% {
+    transform: scale(1);
+  }
+}
+
+.connection-insight:not([hidden]) {
+  animation: insight-open 220ms var(--ease-out-expo) both;
+}
+
+@keyframes insight-open {
+  from {
+    opacity: 0;
+    transform: translate3d(0, -5px, 0);
+  }
+  to {
+    opacity: 1;
+    transform: translate3d(0, 0, 0);
+  }
+}
+
+.connection-row {
+  border-radius: 10px;
+  padding-inline: 6px;
+  margin-inline: -6px;
+  transition: background-color 180ms ease;
+}
+
+.connection-row:hover {
+  background: rgba(166, 154, 203, 0.08);
+}
+
+.connection-row > a {
+  display: inline-grid;
+  place-items: center;
+  width: 26px;
+  height: 26px;
+  border-radius: 50%;
+  transition: transform 200ms var(--ease-out-quart), background-color 180ms ease, color 180ms ease;
+}
+
+.connection-row:hover > a {
+  transform: translate3d(2px, 0, 0);
+  color: var(--garden-ink);
+}
+
+/* Gentle reminder thought transition */
+.reminder-thought {
+  animation: thought-arrive 320ms var(--ease-out-expo) both;
+}
+
+@keyframes thought-arrive {
+  from {
+    opacity: 0;
+    transform: translate3d(0, 6px, 0);
+  }
+  to {
+    opacity: 1;
+    transform: translate3d(0, 0, 0);
+  }
+}
+
+/* --------------------------------------------------------------------------
+   7. Modern Segmented Diary Tabs & Entry Cards
+   -------------------------------------------------------------------------- */
+.diary-tabs {
+  display: inline-flex;
+  align-items: center;
+  max-width: 100%;
+  gap: 4px;
+  padding: 5px;
+  border: 1px solid var(--garden-line);
+  border-radius: 999px;
+  background: rgba(237, 242, 233, 0.72);
+  backdrop-filter: blur(10px);
+  -webkit-backdrop-filter: blur(10px);
+  scrollbar-width: none;
+}
+
+.diary-tabs::-webkit-scrollbar {
+  display: none;
+}
+
+html[data-theme='dark'] .diary-tabs {
+  background: rgba(31, 46, 39, 0.78);
+  border-color: #3d4f43;
+}
+
+.diary-tabs button {
+  position: relative;
+  isolation: isolate;
+  background: transparent !important;
+  border: 0 !important;
+  padding: 9px 16px;
+  border-radius: 999px;
+  transition: color 180ms ease, transform 160ms var(--ease-out-quart);
+}
+
+.diary-tabs button:active {
+  transform: scale(0.97);
+}
+
+.diary-tabs button > svg,
+.diary-tabs button > span:not(.diary-tab-pill) {
+  position: relative;
+  z-index: 1;
+}
+
+.diary-tab-pill {
+  position: absolute;
+  inset: 0;
+  z-index: 0;
+  border-radius: 999px;
+  background: #334f42;
+  box-shadow: 0 4px 12px rgba(34, 58, 47, 0.22);
+}
+
+html[data-theme='dark'] .diary-tab-pill {
+  background: #d7e3d2;
+  box-shadow: 0 4px 14px rgba(8, 18, 13, 0.35);
+}
+
+.entry-card {
+  transition:
+    transform 240ms var(--ease-out-quart),
+    box-shadow 240ms var(--ease-out-quart),
+    border-color 200ms ease;
+}
+
+.entry-card:hover {
+  transform: translate3d(0, -2px, 0);
+  box-shadow: var(--garden-shadow-hover);
+}
+
+.vault-list-item,
+.vault-explanation > div {
+  transition:
+    transform 220ms var(--ease-out-quart),
+    box-shadow 220ms var(--ease-out-quart),
+    border-color 200ms ease;
+}
+
+.vault-explanation > div:hover {
+  transform: translate3d(0, -3px, 0);
+  border-color: var(--spot-ring);
+}
+
+/* --------------------------------------------------------------------------
+   8. Editor Live Status Pill, Ambient Focus & Upload Bar
+   -------------------------------------------------------------------------- */
+.save-status {
+  padding: 6px 11px;
+  border-radius: 999px;
+  background: rgba(237, 242, 233, 0.85);
+  border: 1px solid var(--garden-line);
+  font-weight: 600;
+  transition: background-color 200ms ease, border-color 200ms ease, color 200ms ease;
+}
+
+html[data-theme='dark'] .save-status {
+  background: rgba(39, 56, 46, 0.85);
+  border-color: #3f5145;
+}
+
+.save-status.status-typing .status-dot {
+  background: var(--garden-lilac);
+  animation: status-pulse 1.4s ease-in-out infinite;
+}
+
+.save-status.status-saved svg {
+  color: #4b8364;
+  animation: check-pop 280ms var(--ease-spring) both;
+}
+
+html[data-theme='dark'] .save-status.status-saved svg {
+  color: #a9d5b5;
+}
+
+@keyframes status-pulse {
+  0%, 100% {
+    transform: scale(1);
+    opacity: 0.65;
+  }
+  50% {
+    transform: scale(1.45);
+    opacity: 1;
+  }
+}
+
+@keyframes check-pop {
+  from {
+    transform: scale(0.6);
+    opacity: 0.4;
+  }
+  to {
+    transform: scale(1);
+    opacity: 1;
+  }
+}
+
+.editor-paper {
+  transition:
+    border-color 240ms ease,
+    box-shadow 260ms var(--ease-out-quart),
+    transform 240ms var(--ease-out-quart);
+}
+
+.editor-paper:focus-within {
+  border-color: rgba(166, 154, 203, 0.62);
+  box-shadow:
+    inset 0 0 26px rgba(107, 96, 153, 0.03),
+    0 12px 30px rgba(83, 72, 122, 0.08),
+    0 0 0 3px rgba(166, 154, 203, 0.14);
+}
+
+html[data-theme='dark'] .editor-paper:focus-within {
+  border-color: rgba(194, 181, 223, 0.52);
+  box-shadow:
+    0 12px 30px rgba(0, 0, 0, 0.25),
+    0 0 0 3px rgba(194, 181, 223, 0.14);
+}
+
+.editor-tools button {
+  padding: 5px 10px;
+  border-radius: 999px;
+  transition: background-color 180ms ease, color 180ms ease, transform 160ms var(--ease-out-quart);
+}
+
+.editor-tools button:not(:disabled):hover {
+  background: rgba(166, 154, 203, 0.13);
+}
+
+.editor-tools button:not(:disabled):active {
+  transform: scale(0.96);
+}
+
+.editor-tools button.is-recording {
+  background: rgba(217, 131, 112, 0.16);
+  color: #b85645;
+}
+
+html[data-theme='dark'] .editor-tools button.is-recording {
+  background: rgba(230, 161, 142, 0.2);
+  color: #ffb9a8;
+}
+
+.upload-progress {
+  position: relative;
+  overflow: hidden;
+}
+
+.upload-progress::after {
+  content: '';
+  position: absolute;
+  left: 0;
+  bottom: 0;
+  height: 2px;
+  width: 100%;
+  transform-origin: 0 50%;
+  transform: scaleX(var(--upload-ratio, 0));
+  background: linear-gradient(90deg, var(--garden-lilac), var(--garden-green));
+  transition: transform 200ms ease-out;
+}
+
+/* --------------------------------------------------------------------------
+   9. Modern Dialogs, Toasts & Sign-In Split Choreography
+   -------------------------------------------------------------------------- */
+.modal-overlay {
+  animation: overlay-fade-in 190ms ease-out both;
+}
+
+.modal {
+  box-shadow: 0 28px 90px rgba(25, 43, 34, 0.24), var(--glass-highlight);
+  animation: modal-pop-in 270ms var(--ease-out-expo) both;
+}
+
+.modal-close {
+  border-radius: 50%;
+  width: 32px;
+  height: 32px;
+  transition: background-color 180ms ease, transform 200ms var(--ease-spring), color 180ms ease;
+}
+
+.modal-close:hover {
+  background: rgba(166, 154, 203, 0.14);
+  transform: scale(1.06);
+}
+
+.modal-close:active {
+  transform: scale(0.94);
+}
+
+@keyframes overlay-fade-in {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
+}
+
+@keyframes modal-pop-in {
+  from {
+    opacity: 0;
+    transform: translate3d(0, 14px, 0) scale(0.968);
+  }
+  to {
+    opacity: 1;
+    transform: translate3d(0, 0, 0) scale(1);
+  }
+}
+
+.toast {
+  position: relative;
+  overflow: hidden;
+  backdrop-filter: blur(14px);
+  -webkit-backdrop-filter: blur(14px);
+  animation: toast-slide-in 300ms var(--ease-spring) both;
+}
+
+.toast-timer {
+  position: absolute;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  height: 2px;
+  transform-origin: 0 50%;
+  background: currentColor;
+  opacity: 0.28;
+  animation: toast-countdown 5s linear forwards;
+}
+
+@keyframes toast-slide-in {
+  from {
+    opacity: 0;
+    transform: translate3d(0, 12px, 0) scale(0.96);
+  }
+  to {
+    opacity: 1;
+    transform: translate3d(0, 0, 0) scale(1);
+  }
+}
+
+@keyframes toast-countdown {
+  from {
+    transform: scaleX(1);
+  }
+  to {
+    transform: scaleX(0);
+  }
+}
+
+/* Sign-in split screen subtle entrance */
+.signin-art-copy {
+  animation: stagger-rise 440ms var(--ease-out-expo) both;
+}
+
+.signin-art img {
+  animation: stagger-rise 520ms var(--ease-out-expo) 80ms both;
+  transition: transform 650ms var(--ease-out-expo);
+}
+
+.signin-art img:hover {
+  transform: scale(1.018);
+}
+
+.signin-box {
+  animation: stagger-rise 420ms var(--ease-out-expo) 60ms both;
+}
+
+.boot-screen > span,
+.loading-block {
+  animation: stage-enter 280ms var(--ease-out-expo) both;
+}
+
+/* --------------------------------------------------------------------------
+   10. Strict Reduced Motion Accessibility Override
+   -------------------------------------------------------------------------- */
+@media (prefers-reduced-motion: reduce) {
+  html {
+    scroll-behavior: auto !important;
+  }
+
+  *,
+  *::before,
+  *::after {
+    animation: none !important;
+    transition: none !important;
+  }
+
+  [data-revealed='pending'] {
+    opacity: 1 !important;
+    transform: none !important;
+  }
+
+  .spotlight-card::after {
+    display: none !important;
+  }
+}
